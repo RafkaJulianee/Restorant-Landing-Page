@@ -51,121 +51,203 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kelola Hero - Admin Dashboard</title>
+    <title>Kelola Hero - Foody Central</title>
+    
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Phosphor Icons -->
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
-</head>
-<body class="bg-slate-50 min-h-screen flex">
 
-    <!-- Sidebar (Simplified Sidebar for consistency) -->
-    <aside class="w-64 bg-white border-r border-gray-200 hidden md:flex flex-col">
-        <div class="p-6 border-b border-gray-100 font-bold text-xl text-brand-red flex items-center gap-2">
-             <i class="ph ph-hamburger text-brand-red"></i> Foody Admin
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Outfit', 'sans-serif'],
+                        heading: ['"Playfair Display"', 'serif'],
+                    },
+                    colors: {
+                        brand: {
+                            red: '#F43F5E',
+                            dark: '#1E293B',
+                            light: '#F8FAFC'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-brand-light font-sans antialiased min-h-screen flex">
+
+    <!-- Sidebar -->
+    <aside class="w-72 bg-white border-r border-gray-100 hidden md:flex flex-col sticky top-0 h-screen">
+        <div class="p-8 flex items-center gap-3">
+             <div class="bg-brand-red text-white p-2 rounded-2xl shadow-lg shadow-brand-red/20 ml-1">
+                <i class="ph-fill ph-hamburger text-xl"></i>
+             </div>
+             <span class="font-serif font-black text-2xl text-gray-800 tracking-tight">Foody Central</span>
         </div>
-        <nav class="flex-1 p-4 space-y-1">
-            <a href="dashboard.php" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-500 hover:bg-rose-50 hover:text-rose-600 transition-all">
-                <i class="ph ph-house-line text-xl"></i> Dashboard
+        
+        <nav class="flex-1 px-6 space-y-2 mt-4">
+            <div class="px-4 py-3 text-[10px] uppercase font-black text-gray-400 tracking-[0.2em] mb-2">Utama</div>
+            <a href="dashboard.php" class="flex items-center gap-4 px-5 py-4 rounded-2xl text-gray-500 hover:bg-gray-50 hover:text-brand-red transition-all">
+                <i class="ph ph-house-line text-2xl"></i> Dashboard
             </a>
-            <a href="manage_hero.php" class="flex items-center gap-3 px-4 py-3 rounded-xl bg-rose-50 text-rose-600 font-medium">
-                <i class="ph-fill ph-image text-xl"></i> Kelola Hero
+            
+            <div class="px-4 py-3 text-[10px] uppercase font-black text-gray-400 tracking-[0.2em] mt-8 mb-2">Kelola Konten</div>
+            <a href="manage_hero.php" class="flex items-center gap-4 px-5 py-4 rounded-2xl bg-rose-50 text-brand-red font-bold transition-all border border-rose-100/50">
+                <i class="ph-fill ph-image text-2xl"></i> Kelola Hero
             </a>
-            <a href="manage_menu.php" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-500 hover:bg-rose-50 hover:text-rose-600 transition-all">
-                <i class="ph ph-bowl-food text-xl"></i> Menu Makanan
+            <a href="manage_menu.php" class="group flex items-center gap-4 px-5 py-4 rounded-2xl text-gray-500 hover:bg-gray-50 hover:text-brand-red transition-all">
+                <i class="ph ph-bowl-food text-2xl transition-transform group-hover:scale-110"></i> Menu Makanan
             </a>
-            <a href="manage_testimonials.php" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-500 hover:bg-rose-50 hover:text-rose-600 transition-all">
-                <i class="ph ph-chat-centered-text text-xl"></i> Testimoni
+            <a href="manage_testimonials.php" class="group flex items-center gap-4 px-5 py-4 rounded-2xl text-gray-500 hover:bg-gray-50 hover:text-brand-red transition-all">
+                <i class="ph ph-chat-centered-text text-2xl transition-transform group-hover:scale-110"></i> Testimoni
             </a>
-            <a href="manage_settings.php" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-500 hover:bg-rose-50 hover:text-rose-600 transition-all">
-                <i class="ph ph-gear text-xl"></i> Pengaturan
+            
+            <div class="px-4 py-3 text-[10px] uppercase font-black text-gray-400 tracking-[0.2em] mt-8 mb-2">Sistem</div>
+            <a href="manage_settings.php" class="group flex items-center gap-4 px-5 py-4 rounded-2xl text-gray-500 hover:bg-gray-50 hover:text-brand-red transition-all">
+                <i class="ph ph-gear text-2xl transition-transform group-hover:scale-110"></i> Pengaturan
             </a>
         </nav>
+
+        <div class="p-6">
+             <a href="logout.php" class="flex items-center justify-center gap-3 px-6 py-4 rounded-2xl font-bold text-red-500 bg-red-50 hover:bg-red-100 transition-all active:scale-95">
+                <i class="ph-bold ph-sign-out text-xl"></i> Keluar Sesi
+             </a>
+        </div>
     </aside>
 
     <main class="flex-1">
-        <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-8">
-            <h1 class="font-bold text-gray-800">Manajemen Hero Section</h1>
-             <a href="../index.php" target="_blank" class="text-sm text-rose-600 hover:underline flex items-center gap-1">
-                Lihat Website <i class="ph ph-arrow-square-out"></i>
+        <header class="h-20 bg-white/80 backdrop-blur-md sticky top-0 z-30 border-b border-gray-100 flex items-center justify-between px-10">
+            <div>
+                <h1 class="text-xl font-serif font-bold text-gray-800">Manajemen Visual Hero</h1>
+                <p class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Atur tampilan utama website Anda</p>
+            </div>
+             <a href="../index.php" target="_blank" class="flex items-center gap-2 text-xs font-bold text-brand-red bg-rose-50 px-4 py-2 rounded-full hover:bg-rose-100 transition-all border border-rose-100">
+                <i class="ph ph-arrow-square-out"></i> Pratinjau Web
              </a>
         </header>
 
-        <div class="p-8">
+        <div class="p-10">
             <?php if($msg): ?>
-                <div class="bg-emerald-50 text-emerald-600 p-4 rounded-2xl mb-6 flex items-center gap-3 border border-emerald-100 animate-fade-in shadow-sm">
-                    <i class="ph-fill ph-check-circle text-2xl"></i> <?php echo $msg; ?>
+                <div class="bg-emerald-50 text-emerald-600 p-5 rounded-3xl mb-8 flex items-center gap-4 border border-emerald-100 shadow-sm animate-fade-in">
+                    <div class="w-10 h-10 bg-emerald-500 text-white rounded-full flex items-center justify-center shadow-lg shadow-emerald-200">
+                        <i class="ph-bold ph-check text-xl"></i>
+                    </div>
+                    <div>
+                        <p class="font-bold">Berhasil!</p>
+                        <p class="text-sm opacity-80"><?php echo $msg; ?></p>
+                    </div>
                 </div>
             <?php endif; ?>
 
-            <div class="bg-white rounded-3xl p-8 shadow-sm border border-gray-100 max-w-4xl">
-                <form method="POST" enctype="multipart/form-data" class="space-y-8">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <label class="block text-sm font-bold text-gray-700 mb-2">Judul Utama (Baris 1)</label>
-                            <input type="text" name="title_1" value="<?php echo $hero['title_1']; ?>" required 
-                                class="w-full px-5 py-3 rounded-xl border border-gray-200 focus:border-rose-500 outline-none transition-all">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-bold text-gray-700 mb-2">Judul Utama (Baris 2)</label>
-                            <input type="text" name="title_2" value="<?php echo $hero['title_2']; ?>" required 
-                                class="w-full px-5 py-3 rounded-xl border border-gray-200 focus:border-rose-500 outline-none transition-all">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-bold text-gray-700 mb-2">Teks Miring (Fokus)</label>
-                            <input type="text" name="title_italic" value="<?php echo $hero['title_italic']; ?>" required 
-                                class="w-full px-5 py-3 rounded-xl border border-gray-200 focus:border-rose-500 outline-none transition-all italic font-serif">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-bold text-gray-700 mb-2">Teks Badge Diskon</label>
-                            <input type="text" name="discount_text" value="<?php echo $hero['discount_text']; ?>" required 
-                                class="w-full px-5 py-3 rounded-xl border border-gray-200 focus:border-rose-500 outline-none transition-all">
-                        </div>
-                    </div>
-
+            <div class="bg-white rounded-[2.5rem] p-10 shadow-sm border border-gray-100 lg:max-w-5xl">
+                <form method="POST" enctype="multipart/form-data" class="space-y-10">
+                    <!-- Heading Settings -->
                     <div>
-                        <label class="block text-sm font-bold text-gray-700 mb-2">Subjudul (Deskripsi)</label>
-                        <textarea name="subtitle" rows="3" required 
-                            class="w-full px-5 py-3 rounded-xl border border-gray-200 focus:border-rose-500 outline-none transition-all"><?php echo $hero['subtitle']; ?></textarea>
+                        <div class="flex items-center gap-3 mb-6">
+                            <i class="ph-fill ph-text-h-one text-brand-red text-2xl"></i>
+                            <h3 class="font-serif font-bold text-lg text-gray-800">Pengaturan Judul & Teks</h3>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <div>
+                                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-3">Teks Badge Atas</label>
+                                <input type="text" name="discount_text" value="<?php echo $hero['discount_text']; ?>" required 
+                                    class="w-full px-6 py-4 rounded-2xl border border-gray-100 bg-gray-50 focus:bg-white focus:border-brand-red outline-none transition-all shadow-inner font-bold text-gray-700">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-3">Judul Utama (Fokus/Miring)</label>
+                                <input type="text" name="title_italic" value="<?php echo $hero['title_italic']; ?>" required 
+                                    class="w-full px-6 py-4 rounded-2xl border border-gray-100 bg-gray-50 focus:bg-white focus:border-brand-red outline-none transition-all shadow-inner font-heading italic text-brand-red text-xl">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-3">Judul Baris 1</label>
+                                <input type="text" name="title_1" value="<?php echo $hero['title_1']; ?>" required 
+                                    class="w-full px-6 py-4 rounded-2xl border border-gray-100 bg-gray-50 focus:bg-white focus:border-brand-red outline-none transition-all shadow-inner font-bold text-gray-700">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-3">Judul Baris 2</label>
+                                <input type="text" name="title_2" value="<?php echo $hero['title_2']; ?>" required 
+                                    class="w-full px-6 py-4 rounded-2xl border border-gray-100 bg-gray-50 focus:bg-white focus:border-brand-red outline-none transition-all shadow-inner font-bold text-gray-700">
+                            </div>
+                        </div>
+                        <div class="mt-8">
+                            <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-3">Subjudul (Deskripsi)</label>
+                            <textarea name="subtitle" rows="4" required 
+                                class="w-full px-6 py-4 rounded-2xl border border-gray-100 bg-gray-50 focus:bg-white focus:border-brand-red outline-none transition-all shadow-inner text-gray-600 leading-relaxed"><?php echo $hero['subtitle']; ?></textarea>
+                        </div>
                     </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <label class="block text-sm font-bold text-gray-700 mb-2">Tombol Utama</label>
-                            <input type="text" name="cta_primary" value="<?php echo $hero['cta_primary']; ?>" required 
-                                class="w-full px-5 py-3 rounded-xl border border-gray-200 focus:border-rose-500 outline-none transition-all">
+                    <!-- Call to Action -->
+                    <div class="pt-10 border-t border-gray-50">
+                        <div class="flex items-center gap-3 mb-6">
+                            <i class="ph-fill ph-cursor-click text-brand-red text-2xl"></i>
+                            <h3 class="font-serif font-bold text-lg text-gray-800">Tombol Aksi</h3>
                         </div>
-                        <div>
-                            <label class="block text-sm font-bold text-gray-700 mb-2">Tombol Sekunder</label>
-                            <input type="text" name="cta_secondary" value="<?php echo $hero['cta_secondary']; ?>" required 
-                                class="w-full px-5 py-3 rounded-xl border border-gray-200 focus:border-rose-500 outline-none transition-all">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <div>
+                                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-3">Label Tombol Utama</label>
+                                <input type="text" name="cta_primary" value="<?php echo $hero['cta_primary']; ?>" required 
+                                    class="w-full px-6 py-4 rounded-2xl border border-gray-100 bg-gray-50 focus:bg-white focus:border-brand-red outline-none transition-all shadow-inner font-bold text-gray-700">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-3">Label Tombol Sekunder (Dihapus di Web)</label>
+                                <input type="text" name="cta_secondary" value="<?php echo $hero['cta_secondary']; ?>" readonly 
+                                    class="w-full px-6 py-4 rounded-2xl border border-gray-100 bg-gray-100 text-gray-400 outline-none transition-all shadow-inner font-bold cursor-not-allowed">
+                                <p class="text-[10px] text-gray-400 mt-2 italic">*Bagian videonya sudah dihapus dari tampilan depan.</p>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="pt-4 border-t border-gray-50 flex flex-col md:flex-row gap-8">
+                    <!-- Image Section -->
+                    <div class="pt-10 border-t border-gray-50 flex flex-col md:flex-row gap-12">
                         <div class="w-full md:w-1/3">
-                            <label class="block text-sm font-bold text-gray-700 mb-3 text-center">Gambar Hero Saat Ini</label>
-                            <div class="aspect-video rounded-2xl overflow-hidden border-4 border-white shadow-md">
-                                <img src="../<?php echo $hero['main_image']; ?>" class="w-full h-full object-cover">
+                            <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-4">Gambar Saat Ini</label>
+                            <div class="aspect-square rounded-[2rem] overflow-hidden border-[8px] border-gray-50 shadow-xl relative group">
+                                <img src="../<?php echo !empty($hero['main_image']) ? $hero['main_image'] : 'assets/img/hero_hd.png'; ?>" class="w-full h-full object-cover transition-transform group-hover:scale-110 duration-500">
+                                <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white pointer-events-none">
+                                    <i class="ph ph-magnifying-glass-plus text-3xl"></i>
+                                </div>
                             </div>
                         </div>
                         <div class="flex-1">
-                            <label class="block text-sm font-bold text-gray-700 mb-3">Ganti Gambar Hero</label>
-                            <div class="p-8 border-2 border-dashed border-gray-200 rounded-2xl text-center bg-slate-50 hover:bg-slate-100 transition-all cursor-pointer relative">
-                                <i class="ph ph-upload-simple text-4xl text-gray-400 mb-2"></i>
-                                <p class="text-sm text-gray-500">Klik untuk pilih file atau seret gambar ke sini</p>
-                                <p class="text-xs text-gray-400 mt-1">Format: JPG, PNG, WEBP (Maks. 2MB)</p>
-                                <input type="file" name="main_image" class="absolute inset-0 opacity-0 cursor-pointer">
+                            <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-4">Ganti Gambar Piring Hero</label>
+                            <div class="relative group">
+                                <div class="w-full p-12 border-2 border-dashed border-gray-100 rounded-[2.5rem] text-center bg-gray-50 group-hover:bg-rose-50 group-hover:border-rose-200 transition-all cursor-pointer">
+                                    <div class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center shadow-sm mx-auto mb-4 group-hover:scale-110 transition-transform">
+                                        <i class="ph ph-upload-simple text-3xl text-brand-red"></i>
+                                    </div>
+                                    <p class="text-sm font-bold text-gray-700 mb-1">Klik untuk pilih file gambar baru</p>
+                                    <p class="text-xs text-gray-400">Rekomendasi: Gambar PNG transparan 1000x1000px</p>
+                                    <input type="file" name="main_image" class="absolute inset-0 opacity-0 cursor-pointer">
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <button type="submit" 
-                        class="bg-rose-500 text-white font-bold px-10 py-4 rounded-2xl hover:bg-rose-600 transition-all shadow-xl shadow-rose-200 mt-6 active:scale-95">
-                        Simpan Perubahan
-                    </button>
+                    <div class="pt-6">
+                        <button type="submit" 
+                            class="w-full md:w-auto bg-brand-red text-white font-black px-12 py-5 rounded-2xl hover:bg-rose-600 transition-all shadow-xl shadow-brand-red/30 active:scale-95 flex items-center justify-center gap-3 text-lg uppercase tracking-widest">
+                            <i class="ph-fill ph-floppy-disk text-2xl"></i>
+                            Simpan Perubahan
+                        </button>
+                    </div>
                 </form>
             </div>
         </div>
     </main>
+
+</body>
+</html>
 
 </body>
 </html>

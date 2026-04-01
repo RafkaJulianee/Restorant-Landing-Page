@@ -160,28 +160,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                     <!-- Premium Badge -->
                     <div class="inline-flex items-center gap-2 bg-white px-4 py-2 rounded-full border border-orange-100 shadow-sm mb-6 animate-fade-in-down">
                         <span class="flex h-2 w-2 rounded-full bg-brand-red animate-pulse"></span>
-                        <span class="text-xs font-bold uppercase tracking-widest text-brand-dark/70">Pilihan Terbaik Di Kota</span>
+                        <span class="text-xs font-bold uppercase tracking-widest text-brand-dark/70"><?php echo $hero['discount_text']; ?></span>
                     </div>
 
                     <h1 class="font-heading text-5xl sm:text-6xl lg:text-[5.5rem] font-bold leading-[1] mb-6 text-brand-dark tracking-tight">
-                        Healthy Eating is <br/>
-                        an <span class="relative inline-block text-brand-red italic">
-                            Important
+                        <?php echo $hero['title_1']; ?> <br/>
+                        <span class="relative inline-block text-brand-red italic">
+                            <?php echo $hero['title_italic']; ?>
                             <svg class="absolute -bottom-2 left-0 w-full h-3 text-orange-200 -z-10" viewBox="0 0 100 10" preserveAspectRatio="none">
                                 <path d="M0 5 Q 50 0 100 5" stroke="currentColor" stroke-width="4" fill="transparent" />
                             </svg>
                         </span> <br/>
-                        Part of Lifestyle
+                        <?php echo $hero['title_2']; ?>
                     </h1>
 
                     <p class="text-brand-gray text-lg lg:text-xl mb-10 max-w-xl leading-relaxed font-light">
-                        Kami menyajikan hidangan lezat dan bergizi seimbang yang diolah dari bahan-bahan organik pilihan untuk menemani gaya hidup sehat Anda setiap hari.
+                        <?php echo $hero['subtitle']; ?>
                     </p>
 
                     <div class="flex flex-col sm:flex-row gap-6 items-center justify-center lg:justify-start w-full">
                         <a href="#menu" class="group relative w-full sm:w-auto overflow-hidden bg-brand-red text-white px-10 py-5 rounded-2xl font-bold transition-all hover:scale-[1.02] active:scale-95 shadow-2xl shadow-brand-red/30">
                             <span class="relative z-10 flex items-center justify-center gap-2">
-                                Explore Menu Sekarang 
+                                <?php echo $hero['cta_primary']; ?>
                                 <i class="ph ph-arrow-right font-bold transition-transform group-hover:translate-x-1"></i>
                             </span>
                             <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
@@ -212,7 +212,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                     
                     <div class="relative w-full max-w-[550px] aspect-square z-10 p-4">
                         <div class="w-full h-full rounded-full border-[12px] border-white shadow-2xl overflow-hidden animate-float-slow transition-transform hover:scale-105 duration-700">
-                            <img src="assets/img/hero_hd.png" alt="Healthy Food Bowl HD" 
+                            <img src="<?php echo !empty($hero['main_image']) ? $hero['main_image'] : 'assets/img/hero_hd.png'; ?>" alt="Healthy Food Bowl HD" 
                                  class="w-full h-full object-cover">
                         </div>
                         

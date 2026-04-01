@@ -55,149 +55,237 @@ $menu_items = $pdo->query("SELECT * FROM menu_items ORDER BY id DESC")->fetchAll
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kelola Menu - Admin Dashboard</title>
+    <title>Kelola Menu - Foody Central</title>
+    
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Phosphor Icons -->
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Outfit', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            red: '#F43F5E',
+                            dark: '#1E293B',
+                            light: '#F8FAFC'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
 </head>
-<body class="bg-slate-50 min-h-screen flex">
+<body class="bg-brand-light font-sans antialiased min-h-screen flex">
 
     <!-- Sidebar -->
-    <aside class="w-64 bg-white border-r border-gray-200 hidden md:flex flex-col">
-        <div class="p-6 border-b border-gray-100 font-bold text-xl text-brand-red flex items-center gap-2">
-             <i class="ph ph-hamburger"></i> Foody Admin
+    <aside class="w-72 bg-white border-r border-gray-100 hidden md:flex flex-col sticky top-0 h-screen">
+        <div class="p-8 flex items-center gap-3">
+             <div class="bg-brand-red text-white p-2 rounded-2xl shadow-lg shadow-brand-red/20 ml-1">
+                <i class="ph-fill ph-hamburger text-xl"></i>
+             </div>
+             <span class="font-serif font-black text-2xl text-gray-800 tracking-tight">Foody Central</span>
         </div>
-        <nav class="flex-1 p-4 space-y-1">
-            <a href="dashboard.php" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-500 hover:bg-rose-50">
-                <i class="ph ph-house-line text-xl"></i> Dashboard
+        
+        <nav class="flex-1 px-6 space-y-2 mt-4">
+            <div class="px-4 py-3 text-[10px] uppercase font-black text-gray-400 tracking-[0.2em] mb-2">Utama</div>
+            <a href="dashboard.php" class="flex items-center gap-4 px-5 py-4 rounded-2xl text-gray-500 hover:bg-gray-50 hover:text-brand-red transition-all">
+                <i class="ph ph-house-line text-2xl"></i> Dashboard
             </a>
-            <a href="manage_hero.php" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-500 hover:bg-rose-50">
-                <i class="ph ph-image text-xl"></i> Kelola Hero
+            
+            <div class="px-4 py-3 text-[10px] uppercase font-black text-gray-400 tracking-[0.2em] mt-8 mb-2">Kelola Konten</div>
+            <a href="manage_hero.php" class="group flex items-center gap-4 px-5 py-4 rounded-2xl text-gray-500 hover:bg-gray-50 hover:text-brand-red transition-all">
+                <i class="ph ph-image text-2xl transition-transform group-hover:scale-110"></i> Kelola Hero
             </a>
-            <a href="manage_menu.php" class="flex items-center gap-3 px-4 py-3 rounded-xl bg-rose-50 text-rose-600 font-medium">
-                <i class="ph-fill ph-bowl-food text-xl"></i> Menu Makanan
+            <a href="manage_menu.php" class="flex items-center gap-4 px-5 py-4 rounded-2xl bg-rose-50 text-brand-red font-bold transition-all border border-rose-100/50">
+                <i class="ph-fill ph-bowl-food text-2xl"></i> Menu Makanan
             </a>
-            <a href="manage_testimonials.php" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-500 hover:bg-rose-50">
-                <i class="ph ph-chat-centered-text text-xl"></i> Testimoni
+            <a href="manage_testimonials.php" class="group flex items-center gap-4 px-5 py-4 rounded-2xl text-gray-500 hover:bg-gray-50 hover:text-brand-red transition-all">
+                <i class="ph ph-chat-centered-text text-2xl transition-transform group-hover:scale-110"></i> Testimoni
             </a>
-            <a href="manage_settings.php" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-500 hover:bg-rose-50">
-                <i class="ph ph-gear text-xl"></i> Pengaturan
+            
+            <div class="px-4 py-3 text-[10px] uppercase font-black text-gray-400 tracking-[0.2em] mt-8 mb-2">Sistem</div>
+            <a href="manage_settings.php" class="group flex items-center gap-4 px-5 py-4 rounded-2xl text-gray-500 hover:bg-gray-50 hover:text-brand-red transition-all">
+                <i class="ph ph-gear text-2xl transition-transform group-hover:scale-110"></i> Pengaturan
             </a>
         </nav>
+
+        <div class="p-6">
+             <a href="logout.php" class="flex items-center justify-center gap-3 px-6 py-4 rounded-2xl font-bold text-red-500 bg-red-50 hover:bg-red-100 transition-all active:scale-95">
+                <i class="ph-bold ph-sign-out text-xl"></i> Keluar Sesi
+             </a>
+        </div>
     </aside>
 
     <main class="flex-1">
-        <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-8">
-            <h1 class="font-bold text-gray-800">Manajemen Menu Makanan</h1>
-            <button onclick="openModal()" class="bg-rose-500 text-white text-sm font-bold px-5 py-2 rounded-xl hover:bg-rose-600 flex items-center gap-2">
-                <i class="ph ph-plus"></i> Tambah Menu
+        <header class="h-20 bg-white/80 backdrop-blur-md sticky top-0 z-30 border-b border-gray-100 flex items-center justify-between px-10">
+            <div>
+                <h1 class="text-xl font-serif font-bold text-gray-800">Manajemen Menu Makanan</h1>
+                <p class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Kelola daftar hidangan restoran Anda</p>
+            </div>
+            <button onclick="openModal()" class="bg-brand-red text-white text-xs font-black px-6 py-3 rounded-xl hover:bg-rose-600 transition-all shadow-lg shadow-brand-red/30 flex items-center gap-2 uppercase tracking-widest">
+                <i class="ph-bold ph-plus"></i> Tambah Menu
             </button>
         </header>
 
-        <div class="p-8">
+        <div class="p-10">
             <?php if($msg): ?>
-                <div class="bg-emerald-50 text-emerald-600 p-4 rounded-2xl mb-6 shadow-sm border border-emerald-100">
-                    <?php echo $msg; ?>
+                <div class="bg-emerald-50 text-emerald-600 p-5 rounded-3xl mb-8 flex items-center gap-4 border border-emerald-100 shadow-sm animate-fade-in">
+                    <div class="w-10 h-10 bg-emerald-500 text-white rounded-full flex items-center justify-center shadow-lg shadow-emerald-200">
+                        <i class="ph-bold ph-check text-xl"></i>
+                    </div>
+                    <p class="font-bold"><?php echo $msg; ?></p>
                 </div>
             <?php endif; ?>
 
-            <!-- Table -->
-            <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
-                <table class="w-full text-left">
-                    <thead class="bg-gray-50 border-b border-gray-100">
-                        <tr>
-                            <th class="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-wider">Item</th>
-                            <th class="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-wider">Harga</th>
-                            <th class="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-wider">Rating</th>
-                            <th class="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-wider">Kategori</th>
-                            <th class="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-wider text-right">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-50">
-                        <?php foreach($menu_items as $item): ?>
-                        <tr class="hover:bg-gray-50/50 transition-colors">
-                            <td class="px-6 py-4">
-                                <div class="flex items-center gap-4">
-                                    <img src="../<?php echo $item['image']; ?>" class="w-12 h-12 rounded-full object-cover">
-                                    <div>
-                                        <div class="font-bold text-gray-800"><?php echo $item['name']; ?></div>
-                                        <div class="text-xs text-gray-400"><?php echo $item['description']; ?></div>
+            <div class="bg-white rounded-[2.5rem] shadow-sm border border-gray-100 overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left">
+                        <thead class="bg-gray-50/50 border-b border-gray-100">
+                            <tr>
+                                <th class="px-8 py-5 text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">Item & Deskripsi</th>
+                                <th class="px-8 py-5 text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">Harga</th>
+                                <th class="px-8 py-5 text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">Rating</th>
+                                <th class="px-8 py-5 text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">Kategori</th>
+                                <th class="px-8 py-5 text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] text-right">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-50">
+                            <?php foreach($menu_items as $item): ?>
+                            <tr class="group hover:bg-brand-light transition-all">
+                                <td class="px-8 py-6">
+                                    <div class="flex items-center gap-5">
+                                        <div class="relative">
+                                            <img src="../<?php echo !empty($item['image']) ? $item['image'] : 'assets/img/menu_placeholder.png'; ?>" 
+                                                 class="w-16 h-16 rounded-2xl object-cover shadow-md group-hover:rotate-6 transition-transform">
+                                            <div class="absolute inset-0 rounded-2xl bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                                        </div>
+                                        <div>
+                                            <div class="font-serif font-bold text-gray-800 text-lg mb-0.5 group-hover:text-brand-red transition-colors"><?php echo $item['name']; ?></div>
+                                            <div class="text-xs text-gray-400 font-medium max-w-xs line-clamp-1 italic"><?php echo $item['description']; ?></div>
+                                        </div>
                                     </div>
-                                </div>
-                            </td>
-                            <td class="px-6 py-4 font-medium text-gray-600">Rp <?php echo $item['price']; ?></td>
-                            <td class="px-6 py-4">
-                                <div class="flex items-center gap-1 text-yellow-500 font-bold">
-                                    <i class="ph-fill ph-star"></i> <?php echo $item['rating']; ?>
-                                </div>
-                            </td>
-                            <td class="px-6 py-4">
-                                <span class="px-3 py-1 rounded-full text-[10px] font-bold uppercase bg-<?php echo $item['category_color']; ?>-100 text-<?php echo $item['category_color']; ?>-600">
-                                    <?php echo $item['category_color']; ?>
-                                </span>
-                            </td>
-                            <td class="px-6 py-4 text-right space-x-2">
-                                <button onclick="editItem(<?php echo htmlspecialchars(json_encode($item)); ?>)" class="text-blue-500 hover:text-blue-600"><i class="ph ph-pencil text-xl"></i></button>
-                                <a href="?delete=<?php echo $item['id']; ?>" onclick="return confirm('Hapus menu ini?')" class="text-red-500 hover:text-red-600"><i class="ph ph-trash text-xl"></i></a>
-                            </td>
-                        </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
+                                </td>
+                                <td class="px-8 py-6">
+                                    <span class="px-4 py-1.5 rounded-full bg-slate-100 text-slate-700 font-bold text-sm tracking-tight">Rp <?php echo $item['price']; ?></span>
+                                </td>
+                                <td class="px-8 py-6">
+                                    <div class="flex items-center gap-1.5 text-amber-500 font-black text-lg">
+                                        <i class="ph-fill ph-star"></i> 
+                                        <span class="text-gray-700 font-bold"><?php echo $item['rating']; ?></span>
+                                    </div>
+                                </td>
+                                <td class="px-8 py-6">
+                                    <span class="px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest bg-<?php echo $item['category_color']; ?>-50 text-<?php echo $item['category_color']; ?>-500 border border-<?php echo $item['category_color']; ?>-100">
+                                        <?php echo $item['category_color']; ?>
+                                    </span>
+                                </td>
+                                <td class="px-8 py-6 text-right">
+                                    <div class="flex justify-end gap-3">
+                                        <button onclick='editItem(<?php echo json_encode($item, JSON_HEX_APOS | JSON_HEX_QUOT); ?>)' 
+                                                class="w-10 h-10 rounded-xl bg-blue-50 text-blue-500 flex items-center justify-center hover:bg-blue-100 transition-all active:scale-90" title="Edit Item">
+                                            <i class="ph-bold ph-pencil-simple"></i>
+                                        </button>
+                                        <a href="?delete=<?php echo $item['id']; ?>" onclick="return confirm('Hapus menu ini?')" 
+                                           class="w-10 h-10 rounded-xl bg-red-50 text-red-500 flex items-center justify-center hover:bg-red-100 transition-all active:scale-90" title="Hapus Item">
+                                            <i class="ph-bold ph-trash"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </main>
 
     <!-- Modal Form -->
-    <div id="modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-white rounded-3xl w-full max-w-xl overflow-hidden shadow-2xl animate-fade-in">
-            <div class="p-6 border-b border-gray-100 flex justify-between items-center bg-gray-50">
-                <h2 id="modalTitle" class="font-bold text-gray-800">Tambah Menu Baru</h2>
-                <button onclick="closeModal()" class="text-gray-400 hover:text-gray-600"><i class="ph ph-x text-2xl"></i></button>
+    <div id="modal" class="fixed inset-0 bg-brand-dark/40 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-[2.5rem] w-full max-w-xl overflow-hidden shadow-2xl animate-fade-in border border-white/20">
+            <div class="p-8 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
+                <div>
+                   <h2 id="modalTitle" class="font-serif font-black text-2xl text-gray-800">Tambah Menu Baru</h2>
+                   <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mt-1">Lengkapi detail hidangan</p>
+                </div>
+                <button onclick="closeModal()" class="w-10 h-10 rounded-full bg-white text-gray-400 hover:text-brand-red flex items-center justify-center shadow-sm transition-all"><i class="ph ph-x text-xl"></i></button>
             </div>
-            <form method="POST" enctype="multipart/form-data" class="p-8 space-y-5">
+            <form method="POST" enctype="multipart/form-data" class="p-10 space-y-8">
                 <input type="hidden" name="id" id="formId">
                 <input type="hidden" name="current_image" id="formCurrentImage">
                 
-                <div class="grid grid-cols-2 gap-5">
-                    <div class="col-span-2 sm:col-span-1">
-                        <label class="block text-xs font-bold text-gray-400 uppercase mb-1">Nama Menu</label>
-                        <input type="text" name="name" id="formName" required class="w-full px-4 py-2.5 rounded-xl border border-gray-200 outline-none focus:border-rose-500">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-8">
+                    <div>
+                        <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-3">Nama Menu</label>
+                        <input type="text" name="name" id="formName" required 
+                               class="w-full px-6 py-4 rounded-2xl border border-gray-100 bg-gray-50 focus:bg-white focus:border-brand-red outline-none transition-all shadow-inner font-bold text-gray-700">
                     </div>
-                    <div class="col-span-2 sm:col-span-1">
-                        <label class="block text-xs font-bold text-gray-400 uppercase mb-1">Harga (contoh: 45k)</label>
-                        <input type="text" name="price" id="formPrice" required class="w-full px-4 py-2.5 rounded-xl border border-gray-200 outline-none focus:border-rose-500">
+                    <div>
+                        <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-3">Harga (Contoh: 45k)</label>
+                        <input type="text" name="price" id="formPrice" required 
+                               class="w-full px-6 py-4 rounded-2xl border border-gray-100 bg-gray-50 focus:bg-white focus:border-brand-red outline-none transition-all shadow-inner font-bold text-gray-700">
                     </div>
                 </div>
 
                 <div>
-                    <label class="block text-xs font-bold text-gray-400 uppercase mb-1">Deskripsi Singkat</label>
-                    <input type="text" name="description" id="formDesc" required class="w-full px-4 py-2.5 rounded-xl border border-gray-200 outline-none focus:border-rose-500">
+                    <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-3">Deskripsi Singkat</label>
+                    <textarea name="description" id="formDesc" required rows="2" 
+                              class="w-full px-6 py-4 rounded-2xl border border-gray-100 bg-gray-50 focus:bg-white focus:border-brand-red outline-none transition-all shadow-inner text-gray-600 leading-relaxed italic"></textarea>
                 </div>
 
-                <div class="grid grid-cols-2 gap-5">
+                <div class="grid grid-cols-2 gap-8">
                     <div>
-                        <label class="block text-xs font-bold text-gray-400 uppercase mb-1">Rating (1.0 - 5.0)</label>
-                        <input type="number" step="0.1" name="rating" id="formRating" required class="w-full px-4 py-2.5 rounded-xl border border-gray-200 outline-none focus:border-rose-500">
+                        <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-3">Rating (1.0 - 5.0)</label>
+                        <div class="relative">
+                            <input type="number" step="0.1" name="rating" id="formRating" required 
+                                   class="w-full px-12 py-4 rounded-2xl border border-gray-100 bg-gray-50 focus:bg-white focus:border-brand-red outline-none transition-all shadow-inner font-bold text-gray-700">
+                            <i class="ph-fill ph-star absolute left-5 top-1/2 -translate-y-1/2 text-amber-500 text-lg"></i>
+                        </div>
                     </div>
                     <div>
-                        <label class="block text-xs font-bold text-gray-400 uppercase mb-1">Warna Kategori</label>
-                        <select name="category_color" id="formColor" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 outline-none focus:border-rose-500">
-                            <option value="pink">Pink</option>
-                            <option value="orange">Orange</option>
-                            <option value="green">Green</option>
-                            <option value="purple">Purple</option>
+                        <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-3">Warna Kategori</label>
+                        <select name="category_color" id="formColor" 
+                                class="w-full px-6 py-4 rounded-2xl border border-gray-100 bg-gray-50 focus:bg-white focus:border-brand-red outline-none transition-all shadow-inner font-bold text-gray-700 appearance-none">
+                            <option value="pink">Pink (Utama)</option>
+                            <option value="orange">Orange (Pedas/Hangat)</option>
+                            <option value="green">Green (Healthy/Salad)</option>
+                            <option value="purple">Purple (Minuman/Dessert)</option>
                         </select>
                     </div>
                 </div>
 
                 <div>
-                    <label class="block text-xs font-bold text-gray-400 uppercase mb-1">Gambar Menu</label>
-                    <input type="file" name="image" class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-rose-50 file:text-rose-700 hover:file:bg-rose-100">
+                    <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-3">Ganti Gambar Menu</label>
+                    <div class="relative group">
+                         <div class="w-full p-6 border-2 border-dashed border-gray-100 rounded-2xl text-center bg-gray-50 group-hover:bg-rose-50 group-hover:border-rose-200 transition-all">
+                             <p class="text-xs font-bold text-gray-400">Klik untuk upload gambar hidangan (PNG/JPG)</p>
+                             <input type="file" name="image" class="absolute inset-0 opacity-0 cursor-pointer">
+                         </div>
+                    </div>
                 </div>
 
-                <div class="pt-4 flex gap-3">
-                    <button type="submit" class="flex-1 bg-rose-500 text-white font-bold py-3 rounded-xl hover:bg-rose-600 shadow-lg shadow-rose-200">Simpan Menu</button>
-                    <button type="button" onclick="closeModal()" class="px-6 py-3 rounded-xl border border-gray-200 text-gray-500 font-bold">Batal</button>
+                <div class="pt-6 flex gap-4">
+                    <button type="submit" 
+                            class="flex-1 bg-brand-red text-white font-black py-5 rounded-2xl hover:bg-rose-600 shadow-xl shadow-brand-red/30 transition-all active:scale-95 uppercase tracking-widest">
+                        Simpan Menu
+                    </button>
+                    <button type="button" onclick="closeModal()" 
+                            class="px-8 py-5 rounded-2xl bg-slate-100 text-slate-500 font-bold hover:bg-slate-200 transition-all uppercase tracking-widest text-xs">
+                        Batal
+                    </button>
                 </div>
             </form>
         </div>
@@ -214,6 +302,8 @@ $menu_items = $pdo->query("SELECT * FROM menu_items ORDER BY id DESC")->fetchAll
             document.getElementById('formPrice').value = '';
             document.getElementById('formDesc').value = '';
             document.getElementById('formRating').value = '';
+            document.getElementById('formCurrentImage').value = '';
+            document.getElementById('formColor').value = 'pink';
         }
 
         function closeModal() {
