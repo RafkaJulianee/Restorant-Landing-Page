@@ -1,9 +1,54 @@
+<?php
+require_once 'config.php';
+
+// Fetch Site Settings
+$stmt = $pdo->query("SELECT * FROM settings WHERE id = 1");
+$settings = $stmt->fetch();
+
+// Fetch Hero Content
+$stmt = $pdo->query("SELECT * FROM hero_content WHERE id = 1");
+$hero = $stmt->fetch();
+
+// Fetch Features
+$stmt = $pdo->query("SELECT * FROM features");
+$features = $stmt->fetchAll();
+
+// Fetch Menu Items
+$stmt = $pdo->query("SELECT * FROM menu_items");
+$menu_items = $stmt->fetchAll();
+
+// Fetch Approved Testimonials
+$stmt = $pdo->query("SELECT * FROM testimonials WHERE is_approved = 1 ORDER BY created_at DESC");
+$testimonials = $stmt->fetchAll();
+
+// Handle Review Submission (AJAX or Post)
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'add_review') {
+    header('Content-Type: application/json');
+    $name = trim($_POST['name']);
+    $role = trim($_POST['role']);
+    $rating = (int)$_POST['rating'];
+    $comment = trim($_POST['comment']);
+
+    if (empty($name) || empty($comment) || $rating < 1) {
+        echo json_encode(['status' => 'error', 'message' => 'Data tidak lengkap!']);
+        exit;
+    }
+
+    $stmt = $pdo->prepare("INSERT INTO testimonials (name, role, rating, comment, is_approved) VALUES (?, ?, ?, ?, 1)");
+    if ($stmt->execute([$name, $role, $rating, $comment])) {
+        echo json_encode(['status' => 'success', 'message' => 'Terima kasih atas ulasan Anda!']);
+    } else {
+        echo json_encode(['status' => 'error', 'message' => 'Gagal mengirim ulasan.']);
+    }
+    exit;
+}
+?>
 <!DOCTYPE html>
 <html lang="id" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Foody - Makanan Sehat & Lezat</title>
+    <title><?php echo $settings['logo_text']; ?> - Makanan Sehat & Lezat</title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -26,7 +71,7 @@
                     },
                     colors: {
                         brand: {
-                            light: '#FEF8F0', // Background color from image
+                            light: '#FEF8F0',
                             red: '#F43F5E',
                             orange: '#F97316',
                             green: '#22C55E',
@@ -44,7 +89,7 @@
 <body class="font-sans antialiased overflow-x-hidden relative">
 
     <!-- Floating WhatsApp Button -->
-    <a href="https://wa.me/6281234567890?text=Halo%20Foody,%20saya%20ingin%20memesan%20makanan!" target="_blank" rel="noopener noreferrer" 
+    <a href="https://wa.me/<?php echo $settings['wa_number']; ?>?text=Halo%20<?php echo $settings['logo_text']; ?>,%20saya%20ingin%20memesan%20makanan!" target="_blank" rel="noopener noreferrer" 
        class="fixed bottom-6 right-6 z-50 bg-[#25D366] text-white p-4 rounded-full shadow-2xl hover:bg-[#1ebe57] hover:scale-110 transition-all duration-300 flex items-center justify-center group">
         <i class="ph-fill ph-whatsapp-logo text-3xl"></i>
         <span class="max-w-0 overflow-hidden whitespace-nowrap group-hover:max-w-xs transition-all duration-300 ease-in-out font-medium group-hover:ml-2 group-hover:mr-1">Pesan via WA</span>
@@ -58,7 +103,7 @@
                 <div class="bg-brand-red text-white p-1.5 rounded-full">
                     <i class="ph-fill ph-hamburger text-xl"></i>
                 </div>
-                <span class="font-bold text-2xl text-brand-red tracking-tight">Foody</span>
+                <span class="font-bold text-2xl text-brand-red tracking-tight"><?php echo $settings['logo_text']; ?></span>
             </a>
 
             <!-- Desktop Menu -->
@@ -70,9 +115,10 @@
                 <a href="#contact" class="hover:text-brand-red transition-colors">Kontak</a>
             </div>
 
-            <!-- Right Actions (Search Only) -->
+            <!-- Right Actions (Search & Admin Only) -->
             <div class="hidden md:flex items-center space-x-5 text-brand-dark">
                 <button class="hover:text-brand-red transition-colors"><i class="ph ph-magnifying-glass text-2xl"></i></button>
+                <a href="admin/login.php" class="hover:text-brand-red transition-colors"><i class="ph ph-user-circle text-2xl"></i></a>
             </div>
 
             <!-- Mobile Menu Toggle -->
@@ -88,6 +134,7 @@
             <a href="#menu" class="font-medium text-lg border-b border-gray-50 pb-2">Menu</a>
             <a href="#testimonials" class="font-medium text-lg border-b border-gray-50 pb-2">Testimoni</a>
             <a href="#contact" class="font-medium text-lg border-b border-gray-50 pb-2">Kontak</a>
+            <a href="admin/login.php" class="font-medium text-lg text-brand-red">Admin Panel</a>
         </div>
     </nav>
 
@@ -98,44 +145,39 @@
             <!-- Hero Text -->
             <div class="w-full lg:w-1/2 flex flex-col items-center lg:items-start text-center lg:text-left z-10">
                 <h1 class="font-serif text-4xl sm:text-5xl lg:text-7xl font-bold leading-tight mb-6 text-brand-dark">
-                    Suasana Nyaman <br/> 
-                    Rasa yang Tak <br/>
-                    <span class="text-brand-gray font-normal italic">Terlupakan</span>
+                    <?php echo $hero['title_1']; ?> <br/> 
+                    <?php echo $hero['title_2']; ?> <br/>
+                    <span class="text-brand-gray font-normal italic"><?php echo $hero['title_italic']; ?></span>
                 </h1>
                 <p class="text-brand-gray text-base sm:text-lg mb-10 max-w-md">
-                    Tempat terbaik untuk menikmati hidangan berkualitas bersama keluarga dan teman. Kami menyajikan pengalaman kuliner yang istimewa khusus untuk Anda.
+                    <?php echo $hero['subtitle']; ?>
                 </p>
                 <div class="flex flex-col sm:flex-row gap-4 items-center">
                     <a href="#menu" class="bg-brand-red text-white px-8 py-3.5 rounded-full font-medium shadow-lg shadow-brand-red/30 hover:bg-rose-600 transition-colors hover:-translate-y-1 transform w-full sm:w-auto text-center">
-                        Eksplor Menu Baru
+                        <?php echo $hero['cta_primary']; ?>
                     </a>
                     <a href="#contact" class="flex items-center gap-3 text-brand-dark font-medium hover:text-brand-red transition-colors group">
                         <div class="w-12 h-12 rounded-full bg-white shadow-md flex items-center justify-center group-hover:scale-110 transition-transform">
                             <i class="ph-fill ph-book-open text-xl text-brand-dark group-hover:text-brand-red"></i>
                         </div>
-                        Reservasi Tempat
+                        <?php echo $hero['cta_secondary']; ?>
                     </a>
                 </div>
             </div>
 
             <!-- Hero Image & Decorations -->
             <div class="w-full lg:w-1/2 relative flex justify-center items-center mt-10 lg:mt-0">
-                <!-- Decorative background blob -->
                 <div class="absolute w-full h-[120%] bg-brand-orange/10 rounded-full blur-3xl -z-10"></div>
                 
-                <!-- Main Image Landscape -->
                 <div class="relative w-full aspect-video z-10 animate-float translate-y-0">
-                    <!-- Blur applied to image itself -->
-                    <img src="assets/img/hero_landscape.png" alt="Suasana Restoran" class="w-full h-full object-cover rounded-[2rem] shadow-2xl border-0 sm:border-8 border-white blur-sm hover:blur-none transition-all duration-500">
+                    <img src="<?php echo $hero['main_image']; ?>" alt="Hero" class="w-full h-full object-cover rounded-[2rem] shadow-2xl border-0 sm:border-8 border-white blur-sm hover:blur-none transition-all duration-500">
                     
-                    <!-- 20% Off Badge -->
                     <div class="absolute -top-5 -right-2 sm:-right-6 bg-brand-green text-white w-20 h-20 sm:w-24 sm:h-24 rounded-full flex flex-col items-center justify-center font-bold shadow-lg transform rotate-12 z-20 hover:scale-110 transition-transform">
-                        <span class="text-xl sm:text-2xl">20%</span>
-                        <span class="text-sm sm:text-base">Off</span>
+                        <span class="text-xl sm:text-2xl"><?php echo substr($hero['discount_text'], 0, 3); ?></span>
+                        <span class="text-sm sm:text-base"><?php echo substr($hero['discount_text'], 4); ?></span>
                     </div>
                 </div>
 
-                <!-- Floating Info Cards - Hidden on small screens to prevent overlap -->
                 <div class="hidden md:flex absolute left-0 bottom-10 lg:bottom-20 bg-white/90 backdrop-blur-sm p-4 rounded-2xl shadow-xl items-center gap-4 animate-float-delayed z-20 border border-white">
                     <div class="bg-brand-light p-3 rounded-full text-brand-dark">
                         <i class="ph-fill ph-moped text-2xl"></i>
@@ -145,24 +187,13 @@
                         <p class="text-xs text-brand-gray">Sampai dalam 30 Menit</p>
                     </div>
                 </div>
-
-                <div class="hidden md:flex absolute right-0 lg:-right-10 top-1/2 bg-white/90 backdrop-blur-sm p-4 rounded-2xl shadow-xl items-center gap-4 animate-float z-20 border border-white">
-                    <div class="bg-brand-light p-3 rounded-full text-brand-dark">
-                        <i class="ph-fill ph-storefront text-2xl"></i>
-                    </div>
-                    <div>
-                        <h4 class="font-bold text-sm">Nyaman & Bersih</h4>
-                        <p class="text-xs text-brand-gray">Standar Kualitas Tinggi</p>
-                    </div>
-                </div>
             </div>
         </div>
     </section>
 
-    <!-- Top Foods / Menu Section -->
+    <!-- Menu Section -->
     <section id="menu" class="py-20 relative z-10">
         <div class="container mx-auto px-6">
-            <!-- Header Section - Centered -->
             <div class="text-center mb-16">
                 <h2 class="font-serif text-3xl lg:text-4xl font-bold text-brand-dark mb-3">Menu Unggulan Kami</h2>
                 <div class="flex items-center justify-center gap-3">
@@ -172,103 +203,37 @@
                 </div>
             </div>
 
-            <!-- Colorful Menu Cards Grid -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-6 pt-10">
-                
-                <!-- Card 1 -->
+                <?php foreach($menu_items as $item): ?>
                 <div class="relative pt-20 group">
                     <div class="absolute top-0 left-1/2 -translate-x-1/2 w-40 h-40 z-10 transition-transform duration-300 group-hover:-translate-y-4">
-                        <img src="assets/img/menu_1.png" alt="Berries Salad" class="w-full h-full object-cover rounded-full border-[6px] border-[#FEF8F0] shadow-xl">
+                        <img src="<?php echo $item['image']; ?>" alt="<?php echo $item['name']; ?>" class="w-full h-full object-cover rounded-full border-[6px] border-[#FEF8F0] shadow-xl text-center flex items-center justify-center text-xs">
                     </div>
-                    <div class="card-pink rounded-[2.5rem] p-6 pt-24 pb-8 text-center text-white relative overflow-hidden shadow-lg shadow-pink-500/30">
-                        <h3 class="font-bold text-xl mb-1">Salad Buah Berry</h3>
-                        <p class="text-pink-100 text-sm mb-4">Campuran buah segar</p>
+                    <div class="card-<?php echo $item['category_color']; ?> rounded-[2.5rem] p-6 pt-24 pb-8 text-center text-white relative overflow-hidden shadow-lg shadow-<?php echo $item['category_color']; ?>-500/30">
+                        <h3 class="font-bold text-xl mb-1"><?php echo $item['name']; ?></h3>
+                        <p class="text-<?php echo $item['category_color']; ?>-100 text-sm mb-4"><?php echo $item['description']; ?></p>
                         <div class="flex justify-between items-center bg-white/20 rounded-full p-1 pl-4 backdrop-blur-sm">
-                            <span class="font-bold text-lg">Rp 45k</span>
+                            <span class="font-bold text-lg">Rp <?php echo $item['price']; ?></span>
                             <button class="bg-white text-brand-dark px-4 py-2 rounded-full text-xs font-bold hover:bg-brand-dark hover:text-white transition-colors flex items-center gap-1">
                                 Pesan <i class="ph ph-caret-right"></i>
                             </button>
                         </div>
                         <div class="absolute top-4 right-4 flex items-center gap-1 text-xs font-bold bg-white/20 px-2 py-1 rounded-full backdrop-blur-sm">
-                            <i class="ph-fill ph-star text-yellow-300"></i> 5.0
+                            <i class="ph-fill ph-star text-yellow-300"></i> <?php echo number_format($item['rating'], 1); ?>
                         </div>
                     </div>
                 </div>
-
-                <!-- Card 2 -->
-                <div class="relative pt-20 group">
-                    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-40 h-40 z-10 transition-transform duration-300 group-hover:-translate-y-4">
-                        <img src="assets/img/menu_2.png" alt="Healthy Salad" class="w-full h-full object-cover rounded-full border-[6px] border-[#FEF8F0] shadow-xl">
-                    </div>
-                    <div class="card-orange rounded-[2.5rem] p-6 pt-24 pb-8 text-center text-white relative overflow-hidden shadow-lg shadow-orange-500/30">
-                        <h3 class="font-bold text-xl mb-1">Salad Sayur Sehat</h3>
-                        <p class="text-orange-100 text-sm mb-4">Kaya akan nutrisi</p>
-                        <div class="flex justify-between items-center bg-white/20 rounded-full p-1 pl-4 backdrop-blur-sm">
-                            <span class="font-bold text-lg">Rp 35k</span>
-                            <button class="bg-white text-brand-dark px-4 py-2 rounded-full text-xs font-bold hover:bg-brand-dark hover:text-white transition-colors flex items-center gap-1">
-                                Pesan <i class="ph ph-caret-right"></i>
-                            </button>
-                        </div>
-                        <div class="absolute top-4 right-4 flex items-center gap-1 text-xs font-bold bg-white/20 px-2 py-1 rounded-full backdrop-blur-sm">
-                            <i class="ph-fill ph-star text-yellow-300"></i> 4.8
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Card 3 -->
-                <div class="relative pt-20 group">
-                    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-40 h-40 z-10 transition-transform duration-300 group-hover:-translate-y-4">
-                        <img src="assets/img/menu_3.png" alt="Green Salad" class="w-full h-full object-cover rounded-full border-[6px] border-[#FEF8F0] shadow-xl">
-                    </div>
-                    <div class="card-green rounded-[2.5rem] p-6 pt-24 pb-8 text-center text-white relative overflow-hidden shadow-lg shadow-green-500/30">
-                        <h3 class="font-bold text-xl mb-1">Salad Alpukat</h3>
-                        <p class="text-green-100 text-sm mb-4">Dietary khusus</p>
-                        <div class="flex justify-between items-center bg-white/20 rounded-full p-1 pl-4 backdrop-blur-sm">
-                            <span class="font-bold text-lg">Rp 40k</span>
-                            <button class="bg-white text-brand-dark px-4 py-2 rounded-full text-xs font-bold hover:bg-brand-dark hover:text-white transition-colors flex items-center gap-1">
-                                Pesan <i class="ph ph-caret-right"></i>
-                            </button>
-                        </div>
-                        <div class="absolute top-4 right-4 flex items-center gap-1 text-xs font-bold bg-white/20 px-2 py-1 rounded-full backdrop-blur-sm">
-                            <i class="ph-fill ph-star text-yellow-300"></i> 4.9
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Card 4 -->
-                <div class="relative pt-20 group">
-                    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-40 h-40 z-10 transition-transform duration-300 group-hover:-translate-y-4">
-                        <img src="assets/img/menu_4.png" alt="Nut Salad" class="w-full h-full object-cover rounded-full border-[6px] border-[#FEF8F0] shadow-xl">
-                    </div>
-                    <div class="card-purple rounded-[2.5rem] p-6 pt-24 pb-8 text-center text-white relative overflow-hidden shadow-lg shadow-purple-500/30">
-                        <h3 class="font-bold text-xl mb-1">Salad Kacang Mix</h3>
-                        <p class="text-purple-100 text-sm mb-4">Protein nabati tinggi</p>
-                        <div class="flex justify-between items-center bg-white/20 rounded-full p-1 pl-4 backdrop-blur-sm">
-                            <span class="font-bold text-lg">Rp 50k</span>
-                            <button class="bg-white text-brand-dark px-4 py-2 rounded-full text-xs font-bold hover:bg-brand-dark hover:text-white transition-colors flex items-center gap-1">
-                                Pesan <i class="ph ph-caret-right"></i>
-                            </button>
-                        </div>
-                        <div class="absolute top-4 right-4 flex items-center gap-1 text-xs font-bold bg-white/20 px-2 py-1 rounded-full backdrop-blur-sm">
-                            <i class="ph-fill ph-star text-yellow-300"></i> 5.0
-                        </div>
-                    </div>
-                </div>
-
+                <?php endforeach; ?>
             </div>
         </div>
     </section>
 
-    <!-- About / Categories Section -->
+    <!-- Why Choose Us Section -->
     <section id="about" class="py-20 bg-white rounded-[3rem] shadow-sm mx-4 lg:mx-8 mb-20 relative z-0">
         <div class="container mx-auto px-6">
             <div class="flex flex-col lg:flex-row gap-16 items-center">
-                
-                <!-- Bento Box Image Grid (Left) -->
-                <!-- Adjusted grid to not overlap on mobile (grid-cols-1 sm:grid-cols-2) -->
                 <div class="w-full lg:w-1/2 grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <!-- Big Item -->
-                    <div class="col-span-1 sm:col-span-1 sm:row-span-2 relative rounded-3xl overflow-hidden shadow-lg bg-[#FFD166] group h-64 sm:h-auto">
+                    <div class="col-span-1 sm:col-span-1 sm:row-span-2 relative rounded-3xl overflow-hidden shadow-lg bg-[#FFD166] group h-64 sm:h-auto text-center flex items-center justify-center">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent z-10"></div>
                         <div class="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 text-center w-full">
                             <h3 class="text-white font-serif font-bold text-2xl drop-shadow-md">TASTY BURGER</h3>
@@ -277,60 +242,34 @@
                         <img src="assets/img/bento_1.png" alt="Burger" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700">
                     </div>
                     
-                    <!-- Small Item Top -->
                     <div class="col-span-1 relative rounded-3xl overflow-hidden shadow-lg group h-48 sm:h-56">
                         <img src="assets/img/bento_2.png" alt="Pancake" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700">
                     </div>
 
-                    <!-- Small Item Bottom -->
                     <div class="col-span-1 relative rounded-3xl overflow-hidden shadow-lg group h-48 sm:h-56">
                          <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10 flex items-end p-4">
-                            <button class="bg-white/30 backdrop-blur-md text-white font-medium px-4 py-2 rounded-full w-full hover:bg-white hover:text-brand-dark transition-colors border border-white/50 text-sm">ORDER NOW</button>
+                            <button class="bg-white/30 backdrop-blur-md text-white font-medium px-4 py-2 rounded-full w-full hover:bg-white hover:text-brand-dark transition-colors border border-white/50 text-sm uppercase">Pesan Sekarang</button>
                          </div>
                         <img src="assets/img/bento_3.png" alt="Meatballs" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700">
                     </div>
                 </div>
 
-                <!-- Features Text (Right) -->
                 <div class="w-full lg:w-1/2">
                     <h2 class="font-serif text-3xl sm:text-4xl font-bold mb-10 text-brand-dark">Kenapa Memilih Restoran Kami?</h2>
-                    
                     <div class="space-y-8">
-                        <!-- Feature 1 -->
+                        <?php foreach($features as $feature): ?>
                         <div class="flex items-start gap-5 group cursor-pointer">
-                            <div class="w-14 h-14 rounded-full bg-orange-100 flex items-center justify-center shrink-0 group-hover:bg-brand-orange transition-colors">
-                                <i class="ph-fill ph-cooking-pot text-3xl text-brand-orange group-hover:text-white transition-colors"></i>
+                            <div class="w-14 h-14 rounded-full <?php echo $feature['bg_color']; ?> flex items-center justify-center shrink-0 group-hover:bg-brand-orange transition-colors">
+                                <i class="ph-fill <?php echo $feature['icon']; ?> text-3xl <?php echo $feature['text_color']; ?> group-hover:text-white transition-colors"></i>
                             </div>
                             <div>
-                                <h3 class="font-bold text-xl mb-1 group-hover:text-brand-orange transition-colors">Nikmati Makanan Lezat</h3>
-                                <p class="text-brand-gray text-sm">Kami menyajikan hidangan dengan cita rasa otentik yang disiapkan oleh koki profesional, khusus untuk memanjakan lidah Anda setiap hari.</p>
+                                <h3 class="font-bold text-xl mb-1 group-hover:text-brand-orange transition-colors"><?php echo $feature['title']; ?></h3>
+                                <p class="text-brand-gray text-sm"><?php echo $feature['description']; ?></p>
                             </div>
                         </div>
-
-                        <!-- Feature 2 -->
-                        <div class="flex items-start gap-5 group cursor-pointer">
-                            <div class="w-14 h-14 rounded-full bg-blue-100 flex items-center justify-center shrink-0 group-hover:bg-blue-500 transition-colors">
-                                <i class="ph-fill ph-armchair text-3xl text-blue-500 group-hover:text-white transition-colors"></i>
-                            </div>
-                            <div>
-                                <h3 class="font-bold text-xl mb-1 group-hover:text-blue-500 transition-colors">Suasana yang Nyaman</h3>
-                                <p class="text-brand-gray text-sm">Interior yang didesain secara estetis dan hangat, membuat momen makan Anda bersama orang terkasih menjadi lebih berkesan.</p>
-                            </div>
-                        </div>
-
-                        <!-- Feature 3 -->
-                        <div class="flex items-start gap-5 group cursor-pointer">
-                            <div class="w-14 h-14 rounded-full bg-green-100 flex items-center justify-center shrink-0 group-hover:bg-brand-green transition-colors">
-                                <i class="ph-fill ph-leaf text-3xl text-brand-green group-hover:text-white transition-colors"></i>
-                            </div>
-                            <div>
-                                <h3 class="font-bold text-xl mb-1 group-hover:text-brand-green transition-colors">Bahan Segar & Alami</h3>
-                                <p class="text-brand-gray text-sm">Kualitas adalah prioritas kami. Semua menu dibuat dari 100% bahan segar dan alami dari penyuplai lokal terbaik.</p>
-                            </div>
-                        </div>
+                        <?php endforeach; ?>
                     </div>
                 </div>
-
             </div>
         </div>
     </section>
@@ -340,81 +279,46 @@
         <div class="container mx-auto px-6">
             <div class="text-center mb-16">
                 <h2 class="font-serif text-3xl lg:text-4xl font-bold text-brand-dark mb-4">Apa Kata Pelanggan Kami</h2>
-                <p class="text-brand-gray max-w-2xl mx-auto">Kami selalu berusaha memberikan layanan terbaik. Berikut adalah pengalaman mereka yang sudah menikmati hidangan di tempat kami.</p>
+                <p class="text-brand-gray max-w-2xl mx-auto">Kami selalu berusaha memberikan layanan terbaik. Berikut adalah ulasan nyata dari mereka.</p>
             </div>
             
-            <!-- Testimonial Grid (dynamic reviews injected here) -->
             <div id="testimonials-grid" class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <!-- Testimonial 1 -->
+                <?php foreach($testimonials as $t): ?>
                 <div class="testimonial-card bg-white p-8 rounded-3xl shadow-sm border border-orange-50 hover:-translate-y-2 transition-transform duration-300 relative">
                     <i class="ph-fill ph-quotes text-5xl text-orange-100 absolute top-6 right-6"></i>
                     <div class="flex gap-1 text-yellow-400 mb-6 text-xl">
-                        <i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i>
+                        <?php for($i=1; $i<=5; $i++) echo ($i <= $t['rating'] ? '<i class="ph-fill ph-star"></i>' : '<i class="ph ph-star"></i>'); ?>
                     </div>
-                    <p class="text-brand-gray mb-8 leading-relaxed">"Suasana restorannya sangat nyaman, cocok banget untuk makan malam keluarga. Makanannya luar biasa enak, terutama steak dan salad buahnya yang sangat segar!"</p>
+                    <p class="text-brand-gray mb-8 leading-relaxed">"<?php echo $t['comment']; ?>"</p>
                     <div class="flex items-center gap-4 border-t border-gray-100 pt-6">
-                        <div class="w-12 h-12 rounded-full bg-pink-100 text-pink-600 flex items-center justify-center font-bold text-xl shrink-0">S</div>
+                        <div class="w-12 h-12 rounded-full bg-rose-100 text-rose-600 flex items-center justify-center font-bold text-xl shrink-0">
+                            <?php echo strtoupper(substr($t['name'], 0, 1)); ?>
+                        </div>
                         <div>
-                            <h4 class="font-bold text-brand-dark">Siti Aminah</h4>
-                            <p class="text-xs text-brand-gray">Pelanggan Setia</p>
+                            <h4 class="font-bold text-brand-dark"><?php echo $t['name']; ?></h4>
+                            <p class="text-xs text-brand-gray"><?php echo $t['role']; ?></p>
                         </div>
                     </div>
                 </div>
-
-                <!-- Testimonial 2 -->
-                <div class="testimonial-card bg-white p-8 rounded-3xl shadow-sm border border-orange-50 hover:-translate-y-2 transition-transform duration-300 relative">
-                    <i class="ph-fill ph-quotes text-5xl text-orange-100 absolute top-6 right-6"></i>
-                    <div class="flex gap-1 text-yellow-400 mb-6 text-xl">
-                        <i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star-half"></i>
-                    </div>
-                    <p class="text-brand-gray mb-8 leading-relaxed">"Pelayanannya sangat ramah dan responsif. Tempatnya bersih dan luas. Harga makanan juga sangat sesuai dengan porsi dan kualitas rasa yang disajikan."</p>
-                    <div class="flex items-center gap-4 border-t border-gray-100 pt-6">
-                        <div class="w-12 h-12 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold text-xl shrink-0">B</div>
-                        <div>
-                            <h4 class="font-bold text-brand-dark">Budi Santoso</h4>
-                            <p class="text-xs text-brand-gray">Food Blogger</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Testimonial 3 -->
-                <div class="testimonial-card bg-white p-8 rounded-3xl shadow-sm border border-orange-50 hover:-translate-y-2 transition-transform duration-300 relative">
-                    <i class="ph-fill ph-quotes text-5xl text-orange-100 absolute top-6 right-6"></i>
-                    <div class="flex gap-1 text-yellow-400 mb-6 text-xl">
-                        <i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i>
-                    </div>
-                    <p class="text-brand-gray mb-8 leading-relaxed">"Saya merayakan ulang tahun disini bersama teman-teman. Kami memesan ruangan khusus, fasilitasnya lengkap dan makanannya disajikan dengan sangat cantik."</p>
-                    <div class="flex items-center gap-4 border-t border-gray-100 pt-6">
-                        <div class="w-12 h-12 rounded-full bg-purple-100 text-purple-600 flex items-center justify-center font-bold text-xl shrink-0">D</div>
-                        <div>
-                            <h4 class="font-bold text-brand-dark">Diana Putri</h4>
-                            <p class="text-xs text-brand-gray">Mahasiswi</p>
-                        </div>
-                    </div>
-                </div>
+                <?php endforeach; ?>
             </div>
 
-            <!-- Form Tambah Ulasan - Simplified Clean Design -->
+            <!-- Simplified Review Form -->
             <div class="mt-20 max-w-2xl mx-auto">
                 <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
-                    <!-- Simple Header -->
                     <div class="px-8 pt-10 pb-2 text-center">
                         <h3 class="font-serif text-3xl font-bold text-brand-dark mb-2">Tulis Ulasan Anda</h3>
                         <p class="text-brand-gray text-sm">Bagikan pengalaman Anda bersama kami</p>
                     </div>
 
-                    <!-- Form Body -->
                     <div class="px-8 py-10">
                         <form id="review-form" class="space-y-6">
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                                <!-- Name Field -->
                                 <div class="review-field-group">
                                     <label class="block text-sm font-medium text-brand-dark mb-2">Nama Lengkap</label>
-                                    <input id="review-name" type="text" placeholder="Nama Anda" 
+                                    <input id="review-name" type="text" placeholder="Nama Anda" required 
                                         class="w-full px-5 py-3.5 rounded-xl border border-gray-200 focus:border-brand-red focus:ring-1 focus:ring-brand-red outline-none text-brand-dark transition-all placeholder-gray-400">
                                 </div>
-
-                                <!-- Profession Field -->
                                 <div class="review-field-group">
                                     <label class="block text-sm font-medium text-brand-dark mb-2">Profesi (opsional)</label>
                                     <input id="review-role" type="text" placeholder="Pekerjaan / Status" 
@@ -422,7 +326,6 @@
                                 </div>
                             </div>
 
-                            <!-- Rating Stars -->
                             <div class="review-field-group text-center sm:text-left">
                                 <label class="block text-sm font-medium text-brand-dark mb-3">Rating Anda</label>
                                 <div class="flex items-center justify-center sm:justify-start gap-1" id="star-rating-container">
@@ -435,17 +338,14 @@
                                 </div>
                             </div>
 
-                            <!-- Comment Field -->
                             <div class="review-field-group">
                                 <label class="block text-sm font-medium text-brand-dark mb-2">Pesan Ulasan</label>
-                                <textarea id="review-comment" placeholder="Tuliskan pengalaman Anda..." rows="4" 
+                                <textarea id="review-comment" placeholder="Tuliskan pengalaman Anda..." rows="4" required 
                                     class="w-full px-5 py-3.5 rounded-xl border border-gray-200 focus:border-brand-red focus:ring-1 focus:ring-brand-red outline-none text-brand-dark transition-all placeholder-gray-400 resize-none"></textarea>
                             </div>
 
-                            <!-- Success / Error Message -->
                             <div id="review-alert" class="hidden"></div>
 
-                            <!-- Submit Button -->
                             <button id="submit-review-btn" type="button" 
                                 class="w-full bg-brand-red text-white font-bold px-8 py-4 rounded-xl hover:bg-rose-600 transition-all shadow-md active:scale-[0.98]">
                                 Kirim Ulasan
@@ -461,13 +361,11 @@
     <section id="contact" class="py-20 mb-10 relative z-10">
         <div class="container mx-auto px-6">
             <div class="bg-[#FFF4E6] rounded-[3rem] p-8 sm:p-10 lg:p-16 flex flex-col lg:flex-row gap-12 lg:gap-20 shadow-sm border border-orange-50 overflow-hidden relative">
-                <!-- Decorative Circle -->
                 <div class="absolute -top-32 -right-32 w-80 h-80 rounded-full border-[40px] border-white/40 pointer-events-none"></div>
 
-                <!-- Contact Form -->
                 <div class="w-full lg:w-3/5 relative z-10">
                     <h2 class="font-serif text-3xl lg:text-4xl font-bold text-brand-dark mb-4">Hubungi Kami</h2>
-                    <p class="text-brand-gray mb-8">Punya pertanyaan, kritik, saran, atau ingin melakukan reservasi meja? Isi formulir di bawah ini dan kami akan segera membalas Anda.</p>
+                    <p class="text-brand-gray mb-8">Punya pertanyaan, kritik, saran, atau ingin melakukan reservasi meja? Kami akan segera membalas Anda.</p>
                     
                     <form class="space-y-5">
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
@@ -481,12 +379,8 @@
                             </div>
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-brand-dark mb-1">Alamat Email</label>
-                            <input type="email" placeholder="email@contoh.com" class="w-full px-5 py-3.5 rounded-xl border-none shadow-sm focus:ring-2 focus:ring-brand-red outline-none text-brand-dark bg-white">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-brand-dark mb-1">Pesan Anda</label>
-                            <textarea placeholder="Tuliskan pesan atau detail reservasi Anda disini..." rows="4" class="w-full px-5 py-3.5 rounded-xl border-none shadow-sm focus:ring-2 focus:ring-brand-red outline-none text-brand-dark bg-white resize-none"></textarea>
+                             <label class="block text-sm font-medium text-brand-dark mb-1">Pesan Anda</label>
+                             <textarea placeholder="Tuliskan pesan atau detail reservasi Anda..." rows="4" class="w-full px-5 py-3.5 rounded-xl border-none shadow-sm focus:ring-2 focus:ring-brand-red outline-none text-brand-dark bg-white resize-none"></textarea>
                         </div>
                         <button type="button" class="bg-brand-red text-white font-bold px-8 py-4 rounded-xl hover:bg-rose-600 transition-colors w-full sm:w-auto shadow-lg shadow-brand-red/20 mt-2">
                             Kirim Pesan Sekarang
@@ -494,7 +388,6 @@
                     </form>
                 </div>
 
-                <!-- Contact Info -->
                 <div class="w-full lg:w-2/5 relative z-10 flex flex-col justify-center">
                     <div class="bg-white p-8 rounded-3xl shadow-sm border border-orange-50 space-y-8">
                         <div>
@@ -502,34 +395,28 @@
                         </div>
                         
                         <div class="flex items-start gap-5">
-                            <div class="w-12 h-12 rounded-full bg-red-50 flex items-center justify-center shrink-0 text-brand-red">
-                                <i class="ph-fill ph-map-pin text-2xl"></i>
-                            </div>
+                            <div class="w-12 h-12 rounded-full bg-red-50 flex items-center justify-center shrink-0 text-brand-red"><i class="ph-fill ph-map-pin text-2xl"></i></div>
                             <div>
                                 <h4 class="font-bold text-brand-dark mb-1">Alamat Restoran</h4>
-                                <p class="text-brand-gray text-sm leading-relaxed">Jl. Sudirman No. 123, Kawasan SCBD, Jakarta Selatan, 12190</p>
+                                <p class="text-brand-gray text-sm leading-relaxed"><?php echo $settings['address']; ?></p>
                             </div>
                         </div>
 
                         <div class="flex items-start gap-5">
-                            <div class="w-12 h-12 rounded-full bg-orange-50 flex items-center justify-center shrink-0 text-brand-orange">
-                                <i class="ph-fill ph-phone text-2xl"></i>
-                            </div>
+                            <div class="w-12 h-12 rounded-full bg-orange-50 flex items-center justify-center shrink-0 text-brand-orange"><i class="ph-fill ph-phone text-2xl"></i></div>
                             <div>
                                 <h4 class="font-bold text-brand-dark mb-1">Telepon & WA</h4>
-                                <p class="text-brand-gray text-sm">+62 812 3456 7890</p>
-                                <p class="text-brand-gray text-sm">021 - 555 1234</p>
+                                <p class="text-brand-gray text-sm">+<?php echo $settings['wa_number']; ?></p>
+                                <p class="text-brand-gray text-sm"><?php echo $settings['phone']; ?></p>
                             </div>
                         </div>
 
                         <div class="flex items-start gap-5">
-                            <div class="w-12 h-12 rounded-full bg-green-50 flex items-center justify-center shrink-0 text-brand-green">
-                                <i class="ph-fill ph-clock text-2xl"></i>
-                            </div>
+                            <div class="w-12 h-12 rounded-full bg-green-50 flex items-center justify-center shrink-0 text-brand-green"><i class="ph-fill ph-clock text-2xl"></i></div>
                             <div>
                                 <h4 class="font-bold text-brand-dark mb-1">Jam Operasional</h4>
-                                <p class="text-brand-gray text-sm">Senin - Jumat: 10.00 - 22.00</p>
-                                <p class="text-brand-gray text-sm">Sabtu - Minggu: 08.00 - 23.00</p>
+                                <p class="text-brand-gray text-sm"><?php echo $settings['opening_hours_week']; ?></p>
+                                <p class="text-brand-gray text-sm"><?php echo $settings['opening_hours_weekend']; ?></p>
                             </div>
                         </div>
                     </div>
@@ -543,73 +430,34 @@
         <div class="container mx-auto px-6">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-16">
                 
-                <!-- Brand Info -->
                 <div class="lg:col-span-1">
                     <a href="#" class="flex items-center gap-2 mb-6">
                         <div class="bg-white text-brand-red p-1.5 rounded-full">
                             <i class="ph-fill ph-hamburger text-xl"></i>
                         </div>
-                        <span class="font-bold text-2xl tracking-tight">Foody</span>
+                        <span class="font-bold text-2xl tracking-tight"><?php echo $settings['logo_text']; ?></span>
                     </a>
                     <p class="text-gray-400 text-sm mb-6 leading-relaxed">
-                        Foody adalah restoran modern yang fokus pada penyajian makanan lezat, bergizi, dan higienis. Visi kami adalah membuat gaya hidup sehat menjadi mudah dan nikmat.
+                        <?php echo $settings['logo_text']; ?> adalah restoran modern yang fokus pada penyajian makanan lezat, bergizi, dan higienis.
                     </p>
-                    <div class="flex gap-4">
-                        <a href="#" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-brand-red hover:text-white transition-colors"><i class="ph-fill ph-facebook-logo text-xl"></i></a>
-                        <a href="#" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-brand-red hover:text-white transition-colors"><i class="ph-fill ph-twitter-logo text-xl"></i></a>
-                        <a href="#" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-brand-red hover:text-white transition-colors"><i class="ph-fill ph-instagram-logo text-xl"></i></a>
-                    </div>
                 </div>
 
-                <!-- Links 1 -->
-                <div>
-                    <h4 class="font-serif font-bold text-xl mb-6 border-b border-white/20 pb-2 inline-block">Tentang Kami</h4>
-                    <ul class="space-y-3 text-sm text-gray-400">
-                        <li><a href="#" class="hover:text-brand-red transition-colors">Cerita Kami</a></li>
-                        <li><a href="#" class="hover:text-brand-red transition-colors">Tim Chef Profesional</a></li>
-                        <li><a href="#" class="hover:text-brand-red transition-colors">Galeri Restoran</a></li>
-                        <li><a href="#" class="hover:text-brand-red transition-colors">Karir</a></li>
-                    </ul>
-                </div>
-
-                <!-- Links 2 -->
-                <div>
-                    <h4 class="font-serif font-bold text-xl mb-6 border-b border-white/20 pb-2 inline-block">Menu Kami</h4>
-                    <ul class="space-y-3 text-sm text-gray-400">
-                        <li><a href="#" class="hover:text-brand-red transition-colors">Special Steak</a></li>
-                        <li><a href="#" class="hover:text-brand-red transition-colors">Salad Sehat Spesial</a></li>
-                        <li><a href="#" class="hover:text-brand-red transition-colors">Burger & Sandwich</a></li>
-                        <li><a href="#" class="hover:text-brand-red transition-colors">Dessert & Minuman</a></li>
-                    </ul>
-                </div>
-
-                <!-- Contact Info -->
                 <div>
                     <h4 class="font-serif font-bold text-xl mb-6 border-b border-white/20 pb-2 inline-block">Hubungi Kami</h4>
                     <ul class="space-y-4 text-sm text-gray-400">
                         <li class="flex items-start gap-3">
                             <i class="ph-fill ph-map-pin text-brand-red text-xl shrink-0 mt-0.5"></i>
-                            <span>Jl. Sudirman No. 123, SCBD, Jakarta Selatan, Indonesia</span>
-                        </li>
-                        <li class="flex items-center gap-3">
-                            <i class="ph-fill ph-phone text-brand-red text-xl shrink-0"></i>
-                            <span>+62 812 3456 7890</span>
+                            <span><?php echo $settings['address']; ?></span>
                         </li>
                         <li class="flex items-center gap-3">
                             <i class="ph-fill ph-envelope-simple text-brand-red text-xl shrink-0"></i>
-                            <span>halo@foodyresto.com</span>
+                            <span><?php echo $settings['email']; ?></span>
                         </li>
                     </ul>
                 </div>
-
             </div>
-
             <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-gray-500">
-                <p>&copy; 2024 Foody Restaurant. Hak Cipta Dilindungi.</p>
-                <div class="flex gap-4 mt-4 md:mt-0">
-                    <a href="#" class="hover:text-white transition-colors">Syarat & Ketentuan</a>
-                    <a href="#" class="hover:text-white transition-colors">Kebijakan Privasi</a>
-                </div>
+                <p>&copy; <?php echo date('Y'); ?> <?php echo $settings['logo_text']; ?> Restaurant. Hak Cipta Dilindungi.</p>
             </div>
         </div>
     </footer>
