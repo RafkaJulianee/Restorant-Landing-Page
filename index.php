@@ -186,16 +186,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                             </span>
                             <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
                         </a>
-
-                        <div class="flex items-center gap-4 group cursor-pointer">
-                            <div class="w-14 h-14 bg-white rounded-2xl flex items-center justify-center shadow-lg group-hover:bg-brand-dark group-hover:text-white transition-all ring-1 ring-black/5">
-                                <i class="ph-fill ph-play text-xl transition-transform group-hover:scale-110"></i>
-                            </div>
-                            <div class="flex flex-col items-start">
-                                <span class="font-bold text-brand-dark group-hover:text-brand-red transition-colors">Tonton Video</span>
-                                <span class="text-[10px] text-brand-gray uppercase tracking-wider font-semibold">Proses Penyajian</span>
-                            </div>
-                        </div>
                     </div>
 
                     <!-- Trust Indicators -->
@@ -220,9 +210,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                     <!-- Glow Behind Plate -->
                     <div class="absolute inset-0 bg-brand-orange/20 rounded-full blur-[120px] scale-75 opacity-50"></div>
                     
-                    <div class="relative w-full max-w-[550px] aspect-square z-10">
-                        <img src="assets/img/image copy 2.png" alt="Healthy Food Bowl" 
-                             class="w-full h-full object-contain drop-shadow-[0_50px_50px_rgba(0,0,0,0.2)] animate-float-slow transition-transform hover:scale-105 duration-700">
+                    <div class="relative w-full max-w-[550px] aspect-square z-10 p-4">
+                        <div class="w-full h-full rounded-full border-[12px] border-white shadow-2xl overflow-hidden animate-float-slow transition-transform hover:scale-105 duration-700">
+                            <img src="assets/img/hero_hd.png" alt="Healthy Food Bowl HD" 
+                                 class="w-full h-full object-cover">
+                        </div>
                         
                         <!-- Floating Engagement Card 1: Customer Rating -->
                         <div class="absolute -top-4 -right-4 lg:-right-8 animate-float delay-75 hero-glass-card p-5 z-20 flex items-center gap-4 transition-transform hover:scale-105">
@@ -493,6 +485,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Map Section -->
+    <section class="pb-20 relative z-10">
+        <div class="container mx-auto px-6">
+            <div class="w-full h-[450px] rounded-[3rem] overflow-hidden shadow-lg border-8 border-white">
+                <iframe 
+                    src="https://maps.google.com/maps?q=<?php echo urlencode($settings['address']); ?>&t=&z=15&ie=UTF8&iwloc=&output=embed" 
+                    width="100%" 
+                    height="100%" 
+                    style="border:0;" 
+                    allowfullscreen="" 
+                    loading="lazy">
+                </iframe>
             </div>
         </div>
     </section>
