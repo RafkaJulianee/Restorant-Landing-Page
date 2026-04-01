@@ -4,7 +4,7 @@ body {
 }
 
 /* ==============================
-   Custom Menu Card Colors
+   Custom Menu Card Colors (Vibrant)
 ============================== */
 .card-pink   { background: linear-gradient(145deg, #fb7185, #f43f5e); }
 .card-orange { background: linear-gradient(145deg, #fb923c, #f97316); }
@@ -12,76 +12,67 @@ body {
 .card-purple { background: linear-gradient(145deg, #a78bfa, #8b5cf6); }
 
 /* ==============================
-   Floating Animation
+   Navbar Typography (Premium)
 ============================== */
-.animate-float {
-    animation: float 6s ease-in-out infinite;
+#navbar a {
+    font-family: 'Outfit', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 0.85rem;
+    font-weight: 600;
 }
-.animate-float-delayed {
-    animation: float 6s ease-in-out 3s infinite;
+
+/* ==============================
+   Custom Aksen & Typography
+============================== */
+.text-peach { color: #E76F51; }
+.bg-peach-light { background-color: #FFF7F0; }
+
+/* ==============================
+   Hero Special Components
+============================== */
+.hero-glass-card {
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 1.5rem;
+    box-shadow: 
+        0 10px 25px -5px rgba(0, 0, 0, 0.05),
+        0 8px 10px -6px rgba(0, 0, 0, 0.05),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.3);
 }
+
+/* ==============================
+   Custom Animations
+============================== */
 @keyframes float {
-    0%   { transform: translateY(0px); }
-    50%  { transform: translateY(-20px); }
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-15px); }
     100% { transform: translateY(0px); }
 }
 
-/* ==============================
-   Glassmorphism Utility
-============================== */
-.glass {
-    background: rgba(254, 248, 240, 0.7);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+@keyframes float-slow {
+    0% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-25px) rotate(2deg); }
+    100% { transform: translateY(0px) rotate(0deg); }
 }
 
-/* ==============================
-   Review Form - Simple Styles
-============================== */
-.review-field-group input:focus,
-.review-field-group textarea:focus {
-    background-color: #fff;
-    box-shadow: 0 0 0 1px #F43F5E;
+@keyframes float-reverse {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(15px); }
+    100% { transform: translateY(0px); }
 }
 
-/* ==============================
-   New Review Card Entrance
-============================== */
-@keyframes reviewSlideIn {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-.new-review-entry {
-    border: 1px solid rgba(244, 63, 94, 0.2) !important;
+@keyframes fade-in-down {
+    0% { opacity: 0; transform: translateY(-20px); }
+    100% { opacity: 1; transform: translateY(0); }
 }
 
-/* ==============================
-   Spin Animation (loading button)
-============================== */
-@keyframes spin {
-    from { transform: rotate(0deg); }
-    to   { transform: rotate(360deg); }
-}
-.animate-spin {
-    animation: spin 0.8s linear infinite;
-    display: inline-block;
-}
+.animate-float { animation: float 4s ease-in-out infinite; }
+.animate-float-slow { animation: float-slow 8s ease-in-out infinite; }
+.animate-float-reverse { animation: float-reverse 4s ease-in-out infinite; }
+.animate-fade-in-down { animation: fade-in-down 1s ease-out forwards; }
 
-/* ==============================
-   Fade In Alert
-============================== */
-@keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(8px); }
-    to   { opacity: 1; transform: translateY(0); }
-}
-.animate-fade-in {
-    animation: fadeInUp 0.35s ease forwards;
-}
+
 

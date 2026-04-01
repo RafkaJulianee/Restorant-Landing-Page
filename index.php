@@ -56,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <!-- Phosphor Icons -->
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
@@ -68,6 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                     fontFamily: {
                         sans: ['Inter', 'sans-serif'],
                         serif: ['Outfit', 'sans-serif'],
+                        heading: ['"Playfair Display"', 'serif'],
                     },
                     colors: {
                         brand: {
@@ -115,10 +116,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                 <a href="#contact" class="hover:text-brand-red transition-colors">Kontak</a>
             </div>
 
-            <!-- Right Actions (Search & Admin Only) -->
-            <div class="hidden md:flex items-center space-x-5 text-brand-dark">
-                <button class="hover:text-brand-red transition-colors"><i class="ph ph-magnifying-glass text-2xl"></i></button>
-                <a href="admin/login.php" class="hover:text-brand-red transition-colors"><i class="ph ph-user-circle text-2xl"></i></a>
+            <!-- Right Actions (WhatsApp Only) -->
+            <div class="hidden md:flex items-center space-x-5">
+                <a href="https://wa.me/<?php echo $settings['wa_number']; ?>" target="_blank" class="bg-brand-red text-white px-6 py-2.5 rounded-full font-bold shadow-lg shadow-brand-red/20 hover:bg-rose-600 transition-all hover:scale-105 active:scale-95">
+                    Pesan Sekarang
+                </a>
             </div>
 
             <!-- Mobile Menu Toggle -->
@@ -134,62 +136,132 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
             <a href="#menu" class="font-medium text-lg border-b border-gray-50 pb-2">Menu</a>
             <a href="#testimonials" class="font-medium text-lg border-b border-gray-50 pb-2">Testimoni</a>
             <a href="#contact" class="font-medium text-lg border-b border-gray-50 pb-2">Kontak</a>
-            <a href="admin/login.php" class="font-medium text-lg text-brand-red">Admin Panel</a>
         </div>
     </nav>
 
-    <!-- Hero Section -->
-    <section id="home" class="pt-32 pb-20 lg:pt-40 lg:pb-28 overflow-hidden">
-        <div class="container mx-auto px-6 flex flex-col-reverse lg:flex-row items-center gap-12 lg:gap-8">
-            
-            <!-- Hero Text -->
-            <div class="w-full lg:w-1/2 flex flex-col items-center lg:items-start text-center lg:text-left z-10">
-                <h1 class="font-serif text-4xl sm:text-5xl lg:text-7xl font-bold leading-tight mb-6 text-brand-dark">
-                    <?php echo $hero['title_1']; ?> <br/> 
-                    <?php echo $hero['title_2']; ?> <br/>
-                    <span class="text-brand-gray font-normal italic"><?php echo $hero['title_italic']; ?></span>
-                </h1>
-                <p class="text-brand-gray text-base sm:text-lg mb-10 max-w-md">
-                    <?php echo $hero['subtitle']; ?>
-                </p>
-                <div class="flex flex-col sm:flex-row gap-4 items-center">
-                    <a href="#menu" class="bg-brand-red text-white px-8 py-3.5 rounded-full font-medium shadow-lg shadow-brand-red/30 hover:bg-rose-600 transition-colors hover:-translate-y-1 transform w-full sm:w-auto text-center">
-                        <?php echo $hero['cta_primary']; ?>
-                    </a>
-                    <a href="#contact" class="flex items-center gap-3 text-brand-dark font-medium hover:text-brand-red transition-colors group">
-                        <div class="w-12 h-12 rounded-full bg-white shadow-md flex items-center justify-center group-hover:scale-110 transition-transform">
-                            <i class="ph-fill ph-book-open text-xl text-brand-dark group-hover:text-brand-red"></i>
-                        </div>
-                        <?php echo $hero['cta_secondary']; ?>
-                    </a>
-                </div>
-            </div>
+    <!-- Hero Section (New Concept: Premium Dining) -->
+    <section id="home" class="relative pt-32 pb-20 lg:pt-44 lg:pb-32 overflow-hidden bg-brand-light">
+        <!-- Modern Decorative Elements -->
+        <div class="absolute -top-24 -right-24 w-[450px] h-[450px] bg-brand-red/10 rounded-full blur-[100px] -z-10"></div>
+        <div class="absolute -bottom-24 -left-24 w-[350px] h-[350px] bg-brand-orange/10 rounded-full blur-[80px] -z-10"></div>
+        
+        <!-- Abstract Shape Decor -->
+        <div class="absolute top-1/4 right-0 opacity-10 pointer-events-none -z-10">
+            <svg width="400" height="400" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M150 100C150 138.66 118.66 170 80 170C41.3401 170 10 138.66 10 100C10 61.3401 41.3401 30 80 30C118.66 30 150 61.3401 150 100Z" fill="#F43F5E"/>
+            </svg>
+        </div>
 
-            <!-- Hero Image & Decorations -->
-            <div class="w-full lg:w-1/2 relative flex justify-center items-center mt-10 lg:mt-0">
-                <div class="absolute w-full h-[120%] bg-brand-orange/10 rounded-full blur-3xl -z-10"></div>
+        <div class="max-w-7xl mx-auto px-6 relative">
+            <div class="flex flex-col lg:flex-row items-center gap-16 lg:gap-4">
                 
-                <div class="relative w-full aspect-video z-10 animate-float translate-y-0">
-                    <img src="<?php echo $hero['main_image']; ?>" alt="Hero" class="w-full h-full object-cover rounded-[2rem] shadow-2xl border-0 sm:border-8 border-white blur-sm hover:blur-none transition-all duration-500">
-                    
-                    <div class="absolute -top-5 -right-2 sm:-right-6 bg-brand-green text-white w-20 h-20 sm:w-24 sm:h-24 rounded-full flex flex-col items-center justify-center font-bold shadow-lg transform rotate-12 z-20 hover:scale-110 transition-transform">
-                        <span class="text-xl sm:text-2xl"><?php echo substr($hero['discount_text'], 0, 3); ?></span>
-                        <span class="text-sm sm:text-base"><?php echo substr($hero['discount_text'], 4); ?></span>
+                <!-- Hero Text (Left) -->
+                <div class="w-full lg:w-[55%] flex flex-col items-center lg:items-start text-center lg:text-left z-20">
+                    <!-- Premium Badge -->
+                    <div class="inline-flex items-center gap-2 bg-white px-4 py-2 rounded-full border border-orange-100 shadow-sm mb-6 animate-fade-in-down">
+                        <span class="flex h-2 w-2 rounded-full bg-brand-red animate-pulse"></span>
+                        <span class="text-xs font-bold uppercase tracking-widest text-brand-dark/70">Pilihan Terbaik Di Kota</span>
+                    </div>
+
+                    <h1 class="font-heading text-5xl sm:text-6xl lg:text-[5.5rem] font-bold leading-[1] mb-6 text-brand-dark tracking-tight">
+                        Healthy Eating is <br/>
+                        an <span class="relative inline-block text-brand-red italic">
+                            Important
+                            <svg class="absolute -bottom-2 left-0 w-full h-3 text-orange-200 -z-10" viewBox="0 0 100 10" preserveAspectRatio="none">
+                                <path d="M0 5 Q 50 0 100 5" stroke="currentColor" stroke-width="4" fill="transparent" />
+                            </svg>
+                        </span> <br/>
+                        Part of Lifestyle
+                    </h1>
+
+                    <p class="text-brand-gray text-lg lg:text-xl mb-10 max-w-xl leading-relaxed font-light">
+                        Kami menyajikan hidangan lezat dan bergizi seimbang yang diolah dari bahan-bahan organik pilihan untuk menemani gaya hidup sehat Anda setiap hari.
+                    </p>
+
+                    <div class="flex flex-col sm:flex-row gap-6 items-center justify-center lg:justify-start w-full">
+                        <a href="#menu" class="group relative w-full sm:w-auto overflow-hidden bg-brand-red text-white px-10 py-5 rounded-2xl font-bold transition-all hover:scale-[1.02] active:scale-95 shadow-2xl shadow-brand-red/30">
+                            <span class="relative z-10 flex items-center justify-center gap-2">
+                                Explore Menu Sekarang 
+                                <i class="ph ph-arrow-right font-bold transition-transform group-hover:translate-x-1"></i>
+                            </span>
+                            <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+                        </a>
+
+                        <div class="flex items-center gap-4 group cursor-pointer">
+                            <div class="w-14 h-14 bg-white rounded-2xl flex items-center justify-center shadow-lg group-hover:bg-brand-dark group-hover:text-white transition-all ring-1 ring-black/5">
+                                <i class="ph-fill ph-play text-xl transition-transform group-hover:scale-110"></i>
+                            </div>
+                            <div class="flex flex-col items-start">
+                                <span class="font-bold text-brand-dark group-hover:text-brand-red transition-colors">Tonton Video</span>
+                                <span class="text-[10px] text-brand-gray uppercase tracking-wider font-semibold">Proses Penyajian</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Trust Indicators -->
+                    <div class="mt-14 pt-8 border-t border-brand-orange/20 flex flex-wrap justify-center lg:justify-start gap-8 opacity-70">
+                        <div class="flex items-center gap-2">
+                            <i class="ph-fill ph-check-circle text-brand-green text-xl"></i>
+                            <span class="text-sm font-medium">Bahan Organik</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <i class="ph-fill ph-check-circle text-brand-green text-xl"></i>
+                            <span class="text-sm font-medium">Koki Berlisensi</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <i class="ph-fill ph-check-circle text-brand-green text-xl"></i>
+                            <span class="text-sm font-medium">Pengiriman Cepat</span>
+                        </div>
                     </div>
                 </div>
 
-                <div class="hidden md:flex absolute left-0 bottom-10 lg:bottom-20 bg-white/90 backdrop-blur-sm p-4 rounded-2xl shadow-xl items-center gap-4 animate-float-delayed z-20 border border-white">
-                    <div class="bg-brand-light p-3 rounded-full text-brand-dark">
-                        <i class="ph-fill ph-moped text-2xl"></i>
-                    </div>
-                    <div>
-                        <h4 class="font-bold text-sm">Pengiriman Cepat</h4>
-                        <p class="text-xs text-brand-gray">Sampai dalam 30 Menit</p>
+                <!-- Hero Plate (Right) -->
+                <div class="w-full lg:w-[45%] relative flex justify-center items-center">
+                    <!-- Glow Behind Plate -->
+                    <div class="absolute inset-0 bg-brand-orange/20 rounded-full blur-[120px] scale-75 opacity-50"></div>
+                    
+                    <div class="relative w-full max-w-[550px] aspect-square z-10">
+                        <img src="assets/img/image copy 2.png" alt="Healthy Food Bowl" 
+                             class="w-full h-full object-contain drop-shadow-[0_50px_50px_rgba(0,0,0,0.2)] animate-float-slow transition-transform hover:scale-105 duration-700">
+                        
+                        <!-- Floating Engagement Card 1: Customer Rating -->
+                        <div class="absolute -top-4 -right-4 lg:-right-8 animate-float delay-75 hero-glass-card p-5 z-20 flex items-center gap-4 transition-transform hover:scale-105">
+                            <div class="flex -space-x-3">
+                                <div class="w-10 h-10 rounded-full border-2 border-white bg-slate-200"></div>
+                                <div class="w-10 h-10 rounded-full border-2 border-white bg-slate-300"></div>
+                                <div class="w-10 h-10 rounded-full border-2 border-white bg-slate-400"></div>
+                            </div>
+                            <div>
+                                <div class="flex items-center gap-1 text-yellow-500 mb-0.5">
+                                    <i class="ph-fill ph-star"></i>
+                                    <i class="ph-fill ph-star"></i>
+                                    <i class="ph-fill ph-star"></i>
+                                    <i class="ph-fill ph-star"></i>
+                                    <i class="ph-fill ph-star"></i>
+                                </div>
+                                <p class="text-[10px] font-bold text-brand-dark uppercase tracking-wider">10K+ Pelanggan Puas</p>
+                            </div>
+                        </div>
+
+                        <!-- Floating Engagement Card 2: Calories/Nutrients -->
+                        <div class="absolute -bottom-8 -left-4 lg:-left-12 animate-float-reverse hero-glass-card p-5 z-20 flex items-center gap-4 transition-transform hover:scale-105">
+                            <div class="w-12 h-12 rounded-xl bg-orange-100 flex items-center justify-center text-brand-orange shadow-inner">
+                                <i class="ph-fill ph-leaf text-2xl"></i>
+                            </div>
+                            <div>
+                                <p class="text-brand-dark font-black text-xl leading-none">100%</p>
+                                <p class="text-[10px] text-brand-gray font-bold uppercase tracking-wider mt-1">Bahan Alami</p>
+                            </div>
+                        </div>
+
+                        <!-- Abstract Shapes -->
+                        <div class="absolute top-[20%] right-[-10%] w-24 h-24 bg-brand-red/5 rounded-full blur-xl -z-10 animate-pulse"></div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
+
 
     <!-- Menu Section -->
     <section id="menu" class="py-20 relative z-10">
