@@ -25,7 +25,7 @@ $testimonials = $stmt->fetchAll();
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'add_review') {
     header('Content-Type: application/json');
     $name = trim($_POST['name']);
-    $role = trim($_POST['role']);
+    $role = ""; // Profesi dihapus sesuai permintaan
     $rating = (int)$_POST['rating'];
     $comment = trim($_POST['comment']);
 
@@ -48,6 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="assets/img/MyCode.png" type="image/x-icon">
     <title><?php echo $settings['logo_text']; ?> - Makanan Sehat & Lezat</title>
     
     <!-- Tailwind CSS -->
@@ -211,17 +212,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                     <div class="absolute inset-0 bg-brand-orange/20 rounded-full blur-[120px] scale-75 opacity-50"></div>
                     
                     <div class="relative w-full max-w-[550px] aspect-square z-10 p-4">
-                        <div class="w-full h-full rounded-full border-[12px] border-white shadow-2xl overflow-hidden animate-float-slow transition-transform hover:scale-105 duration-700">
-                            <img src="<?php echo !empty($hero['main_image']) ? $hero['main_image'] : 'assets/img/hero_hd.png'; ?>" alt="Healthy Food Bowl HD" 
-                                 class="w-full h-full object-cover">
+                        <div class="w-full h-full rounded-[5rem] border-[12px] border-white shadow-2xl overflow-hidden animate-float-slow transition-transform hover:scale-105 duration-700">
+                             <img src="<?php echo !empty($hero['main_image']) ? $hero['main_image'] : 'assets/img/hero_hd.png'; ?>" alt="Healthy Food Bowl HD" 
+                                  class="w-full h-full object-cover">
                         </div>
                         
                         <!-- Floating Engagement Card 1: Customer Rating -->
                         <div class="absolute -top-4 -right-4 lg:-right-8 animate-float delay-75 hero-glass-card p-5 z-20 flex items-center gap-4 transition-transform hover:scale-105">
-                            <div class="flex -space-x-3">
-                                <div class="w-10 h-10 rounded-full border-2 border-white bg-slate-200"></div>
-                                <div class="w-10 h-10 rounded-full border-2 border-white bg-slate-300"></div>
-                                <div class="w-10 h-10 rounded-full border-2 border-white bg-slate-400"></div>
+                            <div class="flex -space-x-2">
+                                <div class="w-10 h-10 rounded-lg border-2 border-white bg-slate-200"></div>
+                                <div class="w-10 h-10 rounded-lg border-2 border-white bg-slate-300"></div>
+                                <div class="w-10 h-10 rounded-lg border-2 border-white bg-slate-400"></div>
                             </div>
                             <div>
                                 <div class="flex items-center gap-1 text-yellow-500 mb-0.5">
@@ -271,7 +272,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                 <?php foreach($menu_items as $item): ?>
                 <div class="relative pt-20 group">
                     <div class="absolute top-0 left-1/2 -translate-x-1/2 w-40 h-40 z-10 transition-transform duration-300 group-hover:-translate-y-4">
-                        <img src="<?php echo $item['image']; ?>" alt="<?php echo $item['name']; ?>" class="w-full h-full object-cover rounded-full border-[6px] border-[#FEF8F0] shadow-xl text-center flex items-center justify-center text-xs">
+                        <img src="<?php echo $item['image']; ?>" alt="<?php echo $item['name']; ?>" class="w-full h-full object-cover rounded-[2.5rem] border-[6px] border-[#FEF8F0] shadow-xl text-center flex items-center justify-center text-xs">
                     </div>
                     <div class="card-<?php echo $item['category_color']; ?> rounded-[2.5rem] p-6 pt-24 pb-8 text-center text-white relative overflow-hidden shadow-lg shadow-<?php echo $item['category_color']; ?>-500/30">
                         <h3 class="font-bold text-xl mb-1"><?php echo $item['name']; ?></h3>
@@ -355,12 +356,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                     </div>
                     <p class="text-brand-gray mb-8 leading-relaxed">"<?php echo $t['comment']; ?>"</p>
                     <div class="flex items-center gap-4 border-t border-gray-100 pt-6">
-                        <div class="w-12 h-12 rounded-full bg-rose-100 text-rose-600 flex items-center justify-center font-bold text-xl shrink-0">
+                        <div class="w-12 h-12 rounded-xl bg-rose-100 text-rose-600 flex items-center justify-center font-bold text-xl shrink-0">
                             <?php echo strtoupper(substr($t['name'], 0, 1)); ?>
                         </div>
                         <div>
                             <h4 class="font-bold text-brand-dark"><?php echo $t['name']; ?></h4>
-                            <p class="text-xs text-brand-gray"><?php echo $t['role']; ?></p>
+                            <p class="text-[10px] font-bold text-brand-red uppercase tracking-widest mt-1 opacity-70">
+                                <i class="ph-bold ph-clock"></i> <?php echo date('H:i, d M Y', strtotime($t['created_at'])); ?>
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -377,18 +380,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
 
                     <div class="px-8 py-10">
                         <form id="review-form" class="space-y-6">
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                                <div class="review-field-group">
+                                <div class="review-field-group col-span-2">
                                     <label class="block text-sm font-medium text-brand-dark mb-2">Nama Lengkap</label>
-                                    <input id="review-name" type="text" placeholder="Nama Anda" required 
+                                    <input id="review-name" type="text" placeholder="Masukkan nama Anda" required 
                                         class="w-full px-5 py-3.5 rounded-xl border border-gray-200 focus:border-brand-red focus:ring-1 focus:ring-brand-red outline-none text-brand-dark transition-all placeholder-gray-400">
                                 </div>
-                                <div class="review-field-group">
-                                    <label class="block text-sm font-medium text-brand-dark mb-2">Profesi (opsional)</label>
-                                    <input id="review-role" type="text" placeholder="Pekerjaan / Status" 
-                                        class="w-full px-5 py-3.5 rounded-xl border border-gray-200 focus:border-brand-red focus:ring-1 focus:ring-brand-red outline-none text-brand-dark transition-all placeholder-gray-400">
-                                </div>
-                            </div>
 
                             <div class="review-field-group text-center sm:text-left">
                                 <label class="block text-sm font-medium text-brand-dark mb-3">Rating Anda</label>
@@ -494,12 +490,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
         <div class="container mx-auto px-6">
             <div class="w-full h-[450px] rounded-[3rem] overflow-hidden shadow-lg border-8 border-white">
                 <iframe 
-                    src="https://maps.google.com/maps?q=<?php echo urlencode($settings['address']); ?>&t=&z=15&ie=UTF8&iwloc=&output=embed" 
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3257.497728749219!2d108.3596774740006!3d-7.186140892818977!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e6f43087e24f9d3%3A0x34cfd3589f2615d0!2sSMK%20Negeri%201%20Kawali!5e1!3m2!1sid!2sid!4v1775051857378!5m2!1sid!2sid" 
                     width="100%" 
                     height="100%" 
                     style="border:0;" 
                     allowfullscreen="" 
-                    loading="lazy">
+                    loading="lazy" 
+                    referrerpolicy="no-referrer-when-downgrade">
                 </iframe>
             </div>
         </div>

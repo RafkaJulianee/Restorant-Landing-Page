@@ -150,7 +150,9 @@ $testimonials = $pdo->query("SELECT * FROM testimonials ORDER BY created_at DESC
                         <div class="flex justify-between items-start">
                             <div>
                                 <h3 class="font-serif font-bold text-gray-800 text-xl group-hover:text-brand-red transition-colors"><?php echo $t['name']; ?></h3>
-                                <p class="text-xs text-gray-400 font-bold uppercase tracking-widest mt-1 opacity-70"><?php echo $t['role']; ?> &bull; <span class="text-slate-300"><?php echo date('d M Y', strtotime($t['created_at'])); ?></span></p>
+                                <p class="text-[10px] font-bold text-brand-red uppercase tracking-widest mt-1 opacity-70">
+                                    <i class="ph-bold ph-clock"></i> <?php echo date('H:i, d M Y', strtotime($t['created_at'])); ?>
+                                </p>
                             </div>
                             <div class="flex gap-1.5 text-amber-400 text-lg">
                                 <?php for($i=1; $i<=5; $i++): ?>

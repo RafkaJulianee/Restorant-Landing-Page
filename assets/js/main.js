@@ -126,10 +126,17 @@ document.addEventListener('DOMContentLoaded', () => {
         return avatarColors[Math.floor(Math.random() * avatarColors.length)];
     }
 
-    function createReviewCard(name, role, rating, comment) {
+    function createReviewCard(name, rating, comment) {
         const initials = name.trim().charAt(0).toUpperCase();
         const color = getRandomAvatarColor();
-        const displayRole = role.trim() !== '' ? role.trim() : 'Pelanggan Baru';
+        const now = new Date();
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        const day = String(now.getDate()).padStart(2, '0');
+        const monthNames = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agt", "Sep", "Okt", "Nov", "Des"];
+        const month = monthNames[now.getMonth()];
+        const year = now.getFullYear();
+        const formattedDate = `${hours}:${minutes}, ${day} ${month} ${year}`;
 
         const card = document.createElement('div');
         card.className = 'testimonial-card bg-white p-8 rounded-3xl shadow-sm border border-orange-50 hover:-translate-y-2 transition-transform duration-300 relative new-review-entry';
@@ -144,10 +151,12 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
             <p class="text-brand-gray mb-8 leading-relaxed">"${comment}"</p>
             <div class="flex items-center gap-4 border-t border-gray-100 pt-6">
-                <div class="w-12 h-12 rounded-full ${color.bg} ${color.text} flex items-center justify-center font-bold text-xl shrink-0">${initials}</div>
+                <div class="w-12 h-12 rounded-xl ${color.bg} ${color.text} flex items-center justify-center font-bold text-xl shrink-0">${initials}</div>
                 <div>
                     <h4 class="font-bold text-brand-dark">${name}</h4>
-                    <p class="text-xs text-brand-gray">${displayRole}</p>
+                    <p class="text-[10px] font-bold text-brand-red uppercase tracking-widest mt-1 opacity-70">
+                        <i class="ph-bold ph-clock"></i> ${formattedDate}
+                    </p>
                 </div>
             </div>
         `;
@@ -179,11 +188,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (submitBtn) {
         submitBtn.addEventListener('click', () => {
             const nameInput = document.getElementById('review-name');
-            const roleInput = document.getElementById('review-role');
             const commentInput = document.getElementById('review-comment');
 
             const name = nameInput ? nameInput.value.trim() : '';
-            const role = roleInput ? roleInput.value.trim() : '';
             const comment = commentInput ? commentInput.value.trim() : '';
 
             // Validation
@@ -206,7 +213,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const formData = new FormData();
             formData.append('action', 'add_review');
             formData.append('name', name);
-            formData.append('role', role);
             formData.append('rating', currentRating);
             formData.append('comment', comment);
 
@@ -218,7 +224,7 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(data => {
                 if (data.status === 'success') {
                     // Create and inject the new review card
-                    const newCard = createReviewCard(name, role, currentRating, comment);
+                    const newCard = createReviewCard(name, currentRating, comment);
                     injectReviewCard(newCard);
 
                     // Show success
@@ -226,7 +232,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     // Reset form
                     if (nameInput) nameInput.value = '';
-                    if (roleInput) roleInput.value = '';
                     if (commentInput) commentInput.value = '';
                     currentRating = 0;
                     if (starContainer) {
