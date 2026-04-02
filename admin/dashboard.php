@@ -1,5 +1,5 @@
 <?php
-require_once '../config.php';
+require_once '../core/config.php';
 check_login();
 
 // Fetch statistics
@@ -68,18 +68,18 @@ $site_name = $stmt_settings->fetchColumn();
             </a>
             
             <div class="px-4 py-3 text-[10px] uppercase font-black text-gray-400 tracking-[0.2em] mt-8 mb-2">Kelola Konten</div>
-            <a href="manage_hero.php" class="group flex items-center gap-4 px-5 py-4 rounded-2xl text-gray-500 hover:bg-gray-50 hover:text-brand-red transition-all">
+            <a href="modules/manage_hero.php" class="group flex items-center gap-4 px-5 py-4 rounded-2xl text-gray-500 hover:bg-gray-50 hover:text-brand-red transition-all">
                 <i class="ph ph-image text-2xl transition-transform group-hover:scale-110"></i> Kelola Hero
             </a>
-            <a href="manage_menu.php" class="group flex items-center gap-4 px-5 py-4 rounded-2xl text-gray-500 hover:bg-gray-50 hover:text-brand-red transition-all">
+            <a href="modules/manage_menu.php" class="group flex items-center gap-4 px-5 py-4 rounded-2xl text-gray-500 hover:bg-gray-50 hover:text-brand-red transition-all">
                 <i class="ph ph-bowl-food text-2xl transition-transform group-hover:scale-110"></i> Menu Makanan
             </a>
-            <a href="manage_testimonials.php" class="group flex items-center gap-4 px-5 py-4 rounded-2xl text-gray-500 hover:bg-gray-50 hover:text-brand-red transition-all">
+            <a href="modules/manage_testimonials.php" class="group flex items-center gap-4 px-5 py-4 rounded-2xl text-gray-500 hover:bg-gray-50 hover:text-brand-red transition-all">
                 <i class="ph ph-chat-centered-text text-2xl transition-transform group-hover:scale-110"></i> Testimoni
             </a>
             
             <div class="px-4 py-3 text-[10px] uppercase font-black text-gray-400 tracking-[0.2em] mt-8 mb-2">Sistem</div>
-            <a href="manage_settings.php" class="group flex items-center gap-4 px-5 py-4 rounded-2xl text-gray-500 hover:bg-gray-50 hover:text-brand-red transition-all">
+            <a href="modules/manage_settings.php" class="group flex items-center gap-4 px-5 py-4 rounded-2xl text-gray-500 hover:bg-gray-50 hover:text-brand-red transition-all">
                 <i class="ph ph-gear text-2xl transition-transform group-hover:scale-110"></i> Pengaturan
             </a>
         </nav>
@@ -124,8 +124,8 @@ $site_name = $stmt_settings->fetchColumn();
                         Web Anda baru saja diperbarui ke versi premium. Sekarang Anda dapat mengelola elemen visual baru, menu, dan testimoni pelanggan dengan lebih mudah dan cepat.
                     </p>
                     <div class="mt-8 flex gap-4">
-                        <a href="manage_hero.php" class="bg-brand-red text-white px-6 py-3 rounded-xl font-bold text-sm hover:translate-y-1 transition-all shadow-lg shadow-brand-red/30">Cek Visual Hero</a>
-                        <a href="manage_menu.php" class="bg-white/10 text-white px-6 py-3 rounded-xl font-bold text-sm hover:bg-white/20 transition-all backdrop-blur-md border border-white/10">Update Menu</a>
+                        <a href="modules/manage_hero.php" class="bg-brand-red text-white px-6 py-3 rounded-xl font-bold text-sm hover:translate-y-1 transition-all shadow-lg shadow-brand-red/30">Cek Visual Hero</a>
+                        <a href="modules/manage_menu.php" class="bg-white/10 text-white px-6 py-3 rounded-xl font-bold text-sm hover:bg-white/20 transition-all backdrop-blur-md border border-white/10">Update Menu</a>
                     </div>
                 </div>
                 <i class="ph-fill ph-rocket-launch absolute right-12 top-1/2 -translate-y-1/2 text-[180px] text-white/5 -rotate-12 transition-transform group-hover:scale-110 duration-700"></i>

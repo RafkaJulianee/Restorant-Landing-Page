@@ -1,5 +1,5 @@
 <?php
-require_once 'config.php';
+require_once 'core/config.php';
 
 // Fetch Site Settings
 $stmt = $pdo->query("SELECT * FROM settings WHERE id = 1");
@@ -48,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" href="assets/img/MyCode.png" type="image/x-icon">
+    <link rel="shortcut icon" href="assets/img/hero/hero_square.png" type="image/x-icon">
     <title><?php echo $settings['logo_text']; ?> - Makanan Sehat & Lezat</title>
     
     <!-- Tailwind CSS -->
@@ -211,10 +211,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                     <!-- Glow Behind Plate -->
                     <div class="absolute inset-0 bg-brand-orange/20 rounded-full blur-[120px] scale-75 opacity-50"></div>
                     
-                    <div class="relative w-full max-w-[550px] aspect-square z-10 p-4">
-                        <div class="w-full h-full rounded-[5rem] border-[12px] border-white shadow-2xl overflow-hidden animate-float-slow transition-transform hover:scale-105 duration-700">
-                             <img src="<?php echo !empty($hero['main_image']) ? $hero['main_image'] : 'assets/img/hero_hd.png'; ?>" alt="Healthy Food Bowl HD" 
-                                  class="w-full h-full object-cover">
+                    <div class="relative w-full max-w-[550px] aspect-square z-10 p-4 group">
+                        <!-- Floating Garnish Decoration -->
+                        <div class="absolute -top-10 -left-10 w-20 h-20 text-brand-green/20 opacity-0 group-hover:opacity-100 transition-opacity duration-1000 animate-float-slow">
+                            <i class="ph-fill ph-leaf text-6xl rotate-45"></i>
+                        </div>
+                        <div class="absolute -bottom-10 -right-10 w-20 h-20 text-brand-orange/20 opacity-0 group-hover:opacity-100 transition-opacity duration-1000 animate-float-reverse">
+                            <i class="ph-fill ph-leaf text-6xl -rotate-12"></i>
+                        </div>
+
+                        <div class="w-full h-full rounded-[5rem] border-[12px] border-white shadow-2xl overflow-hidden animate-float-slow transition-transform hover:scale-105 duration-700 relative z-10 bg-white">
+                             <img src="<?php echo !empty($hero['main_image']) ? $hero['main_image'] : 'assets/img/hero/hero_premium.png'; ?>" alt="Premium Gourmet Dish" 
+                                  class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110">
                         </div>
                         
                         <!-- Floating Engagement Card 1: Customer Rating -->
@@ -304,18 +312,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                             <h3 class="text-white font-serif font-bold text-2xl drop-shadow-md">TASTY BURGER</h3>
                             <span class="bg-brand-red text-white text-xs font-bold px-3 py-1 rounded-full mt-2 inline-block shadow-md">BARU!</span>
                         </div>
-                        <img src="assets/img/bento_1.png" alt="Burger" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700">
+                        <img src="assets/img/bento/bento_1.png" alt="Burger" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700">
                     </div>
                     
                     <div class="col-span-1 relative rounded-3xl overflow-hidden shadow-lg group h-48 sm:h-56">
-                        <img src="assets/img/bento_2.png" alt="Pancake" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700">
+                        <img src="assets/img/bento/bento_2.png" alt="Pancake" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700">
                     </div>
 
                     <div class="col-span-1 relative rounded-3xl overflow-hidden shadow-lg group h-48 sm:h-56">
                          <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10 flex items-end p-4">
                             <button class="bg-white/30 backdrop-blur-md text-white font-medium px-4 py-2 rounded-full w-full hover:bg-white hover:text-brand-dark transition-colors border border-white/50 text-sm uppercase">Pesan Sekarang</button>
                          </div>
-                        <img src="assets/img/bento_3.png" alt="Meatballs" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700">
+                        <img src="assets/img/bento/bento_3.png" alt="Meatballs" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700">
                     </div>
                 </div>
 

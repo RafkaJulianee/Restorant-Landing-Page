@@ -1,5 +1,5 @@
 <?php
-require_once '../config.php';
+require_once '../../core/config.php';
 check_login();
 
 $msg = '';
@@ -83,7 +83,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         
         <nav class="flex-1 px-6 space-y-2 mt-4">
             <div class="px-4 py-3 text-[10px] uppercase font-black text-gray-400 tracking-[0.2em] mb-2">Utama</div>
-            <a href="dashboard.php" class="flex items-center gap-4 px-5 py-4 rounded-2xl text-gray-500 hover:bg-gray-50 hover:text-brand-red transition-all">
+            <a href="../dashboard.php" class="flex items-center gap-4 px-5 py-4 rounded-2xl text-gray-500 hover:bg-gray-50 hover:text-brand-red transition-all">
                 <i class="ph ph-house-line text-2xl"></i> Dashboard
             </a>
             
@@ -105,7 +105,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </nav>
 
         <div class="p-6">
-             <a href="logout.php" class="flex items-center justify-center gap-3 px-6 py-4 rounded-2xl font-bold text-red-500 bg-red-50 hover:bg-red-100 transition-all active:scale-95">
+             <a href="../logout.php" class="flex items-center justify-center gap-3 px-6 py-4 rounded-2xl font-bold text-red-500 bg-red-50 hover:bg-red-100 transition-all active:scale-95">
                 <i class="ph-bold ph-sign-out text-xl"></i> Keluar Sesi
              </a>
         </div>
@@ -117,7 +117,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <h1 class="text-xl font-serif font-bold text-gray-800">Pengaturan Umum Website</h1>
                 <p class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Konfigurasi identitas dan kontak restoran</p>
             </div>
-             <a href="../index.php" target="_blank" class="flex items-center gap-2 text-xs font-bold text-brand-red bg-rose-50 px-4 py-2 rounded-full hover:bg-rose-100 transition-all border border-rose-100">
+             <a href="../../index.php" target="_blank" class="flex items-center gap-2 text-xs font-bold text-brand-red bg-rose-50 px-4 py-2 rounded-full hover:bg-rose-100 transition-all border border-rose-100">
                 <i class="ph ph-arrow-square-out"></i> Pratinjau Web
              </a>
         </header>

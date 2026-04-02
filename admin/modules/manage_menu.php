@@ -1,5 +1,5 @@
 <?php
-require_once '../config.php';
+require_once '../../core/config.php';
 check_login();
 
 $msg = '';
@@ -25,10 +25,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $image_path = isset($_POST['current_image']) ? $_POST['current_image'] : '';
 
     if (!empty($_FILES['image']['name'])) {
-        $target_dir = "../assets/img/";
+        $target_dir = "../../assets/img/uploads/";
         $new_filename = "menu_" . time() . "_" . $_FILES["image"]["name"];
         if (move_uploaded_file($_FILES["image"]["tmp_name"], $target_dir . $new_filename)) {
-            $image_path = "assets/img/" . $new_filename;
+            $image_path = "assets/img/uploads/" . $new_filename;
         }
     }
 
@@ -101,7 +101,7 @@ $menu_items = $pdo->query("SELECT * FROM menu_items ORDER BY id DESC")->fetchAll
         
         <nav class="flex-1 px-6 space-y-2 mt-4">
             <div class="px-4 py-3 text-[10px] uppercase font-black text-gray-400 tracking-[0.2em] mb-2">Utama</div>
-            <a href="dashboard.php" class="flex items-center gap-4 px-5 py-4 rounded-2xl text-gray-500 hover:bg-gray-50 hover:text-brand-red transition-all">
+            <a href="../dashboard.php" class="flex items-center gap-4 px-5 py-4 rounded-2xl text-gray-500 hover:bg-gray-50 hover:text-brand-red transition-all">
                 <i class="ph ph-house-line text-2xl"></i> Dashboard
             </a>
             
@@ -123,7 +123,7 @@ $menu_items = $pdo->query("SELECT * FROM menu_items ORDER BY id DESC")->fetchAll
         </nav>
 
         <div class="p-6">
-             <a href="logout.php" class="flex items-center justify-center gap-3 px-6 py-4 rounded-2xl font-bold text-red-500 bg-red-50 hover:bg-red-100 transition-all active:scale-95">
+             <a href="../logout.php" class="flex items-center justify-center gap-3 px-6 py-4 rounded-2xl font-bold text-red-500 bg-red-50 hover:bg-red-100 transition-all active:scale-95">
                 <i class="ph-bold ph-sign-out text-xl"></i> Keluar Sesi
              </a>
         </div>
@@ -168,7 +168,7 @@ $menu_items = $pdo->query("SELECT * FROM menu_items ORDER BY id DESC")->fetchAll
                                 <td class="px-8 py-6">
                                     <div class="flex items-center gap-5">
                                         <div class="relative">
-                                            <img src="../<?php echo !empty($item['image']) ? $item['image'] : 'assets/img/menu_placeholder.png'; ?>" 
+                                            <img src="../../<?php echo !empty($item['image']) ? $item['image'] : 'assets/img/menu/menu_placeholder.png'; ?>" 
                                                  class="w-16 h-16 rounded-2xl object-cover shadow-md group-hover:rotate-6 transition-transform">
                                             <div class="absolute inset-0 rounded-2xl bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
                                         </div>

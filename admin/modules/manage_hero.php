@@ -1,5 +1,5 @@
 <?php
-require_once '../config.php';
+require_once '../../core/config.php';
 check_login();
 
 $msg = '';
@@ -21,13 +21,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Handle Image Upload
     if (!empty($_FILES['main_image']['name'])) {
-        $target_dir = "../assets/img/";
+        $target_dir = "../../assets/img/uploads/";
         $file_extension = strtolower(pathinfo($_FILES["main_image"]["name"], PATHINFO_EXTENSION));
         $new_filename = "hero_" . time() . "." . $file_extension;
         $target_file = $target_dir . $new_filename;
         
         if (move_uploaded_file($_FILES["main_image"]["tmp_name"], $target_file)) {
-            $image_path = "assets/img/" . $new_filename;
+            $image_path = "assets/img/uploads/" . $new_filename;
         }
     }
 
@@ -98,7 +98,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         
         <nav class="flex-1 px-6 space-y-2 mt-4">
             <div class="px-4 py-3 text-[10px] uppercase font-black text-gray-400 tracking-[0.2em] mb-2">Utama</div>
-            <a href="dashboard.php" class="flex items-center gap-4 px-5 py-4 rounded-2xl text-gray-500 hover:bg-gray-50 hover:text-brand-red transition-all">
+            <a href="../dashboard.php" class="flex items-center gap-4 px-5 py-4 rounded-2xl text-gray-500 hover:bg-gray-50 hover:text-brand-red transition-all">
                 <i class="ph ph-house-line text-2xl"></i> Dashboard
             </a>
             
@@ -120,7 +120,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </nav>
 
         <div class="p-6">
-             <a href="logout.php" class="flex items-center justify-center gap-3 px-6 py-4 rounded-2xl font-bold text-red-500 bg-red-50 hover:bg-red-100 transition-all active:scale-95">
+             <a href="../logout.php" class="flex items-center justify-center gap-3 px-6 py-4 rounded-2xl font-bold text-red-500 bg-red-50 hover:bg-red-100 transition-all active:scale-95">
                 <i class="ph-bold ph-sign-out text-xl"></i> Keluar Sesi
              </a>
         </div>
@@ -132,7 +132,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <h1 class="text-xl font-serif font-bold text-gray-800">Manajemen Visual Hero</h1>
                 <p class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Atur tampilan utama website Anda</p>
             </div>
-             <a href="../index.php" target="_blank" class="flex items-center gap-2 text-xs font-bold text-brand-red bg-rose-50 px-4 py-2 rounded-full hover:bg-rose-100 transition-all border border-rose-100">
+             <a href="../../index.php" target="_blank" class="flex items-center gap-2 text-xs font-bold text-brand-red bg-rose-50 px-4 py-2 rounded-full hover:bg-rose-100 transition-all border border-rose-100">
                 <i class="ph ph-arrow-square-out"></i> Pratinjau Web
              </a>
         </header>
@@ -213,7 +213,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <div class="w-full md:w-1/3">
                             <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-4">Gambar Saat Ini</label>
                             <div class="aspect-square rounded-[2rem] overflow-hidden border-[8px] border-gray-50 shadow-xl relative group">
-                                <img src="../<?php echo !empty($hero['main_image']) ? $hero['main_image'] : 'assets/img/hero_hd.png'; ?>" class="w-full h-full object-cover transition-transform group-hover:scale-110 duration-500">
+                                <img src="../../<?php echo !empty($hero['main_image']) ? $hero['main_image'] : 'assets/img/hero_hd.png'; ?>" class="w-full h-full object-cover transition-transform group-hover:scale-110 duration-500">
                                 <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white pointer-events-none">
                                     <i class="ph ph-magnifying-glass-plus text-3xl"></i>
                                 </div>
