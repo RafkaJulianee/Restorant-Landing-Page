@@ -91,12 +91,17 @@ $menu_items = $pdo->query("SELECT * FROM menu_items ORDER BY id DESC")->fetchAll
 <body class="bg-brand-light font-sans antialiased min-h-screen flex">
 
     <!-- Sidebar -->
-    <aside class="w-72 bg-white border-r border-gray-100 hidden md:flex flex-col sticky top-0 h-screen">
-        <div class="p-8 flex items-center gap-3">
-             <div class="bg-brand-red text-white p-2 rounded-2xl shadow-lg shadow-brand-red/20 ml-1">
-                <i class="ph-fill ph-hamburger text-xl"></i>
+    <aside id="mobileSidebar" class="w-72 bg-white border-r border-gray-100 flex flex-col fixed inset-y-0 left-0 z-50 transform -translate-x-full md:relative md:translate-x-0 transition-transform duration-300 h-screen">
+        <div class="p-8 flex items-center justify-between gap-3 md:justify-start w-full">
+             <div class="flex items-center gap-3">
+                 <div class="bg-brand-red text-white p-2 rounded-2xl shadow-lg shadow-brand-red/20 ml-1">
+                    <i class="ph-fill ph-hamburger text-xl"></i>
+                 </div>
+                 <span class="font-serif font-black text-2xl text-gray-800 tracking-tight">Foody Central</span>
              </div>
-             <span class="font-serif font-black text-2xl text-gray-800 tracking-tight">Foody Central</span>
+             <button onclick="toggleSidebar()" class="md:hidden text-gray-400 hover:text-brand-red">
+                 <i class="ph ph-x text-2xl"></i>
+             </button>
         </div>
         
         <nav class="flex-1 px-6 space-y-2 mt-4">
@@ -130,10 +135,15 @@ $menu_items = $pdo->query("SELECT * FROM menu_items ORDER BY id DESC")->fetchAll
     </aside>
 
     <main class="flex-1">
-        <header class="h-20 bg-white/80 backdrop-blur-md sticky top-0 z-30 border-b border-gray-100 flex items-center justify-between px-10">
-            <div>
-                <h1 class="text-xl font-serif font-bold text-gray-800">Manajemen Menu Makanan</h1>
-                <p class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Kelola daftar hidangan restoran Anda</p>
+        <header class="h-20 bg-white/80 backdrop-blur-md sticky top-0 z-30 border-b border-gray-100 flex items-center justify-between px-6 md:px-10">
+            <div class="flex items-center gap-4">
+                <button onclick="toggleSidebar()" class="md:hidden p-2 text-gray-600 hover:bg-gray-100 rounded-xl transition-all">
+                    <i class="ph-bold ph-list text-2xl"></i>
+                </button>
+                <div>
+                    <h1 class="text-xl font-serif font-bold text-gray-800">Manajemen Menu Makanan</h1>
+                    <p class="text-[10px] text-gray-400 font-bold uppercase tracking-wider hidden sm:block">Kelola daftar hidangan restoran Anda</p>
+                </div>
             </div>
             <button onclick="openModal()" class="bg-brand-red text-white text-xs font-black px-6 py-3 rounded-xl hover:bg-rose-600 transition-all shadow-lg shadow-brand-red/30 flex items-center gap-2 uppercase tracking-widest">
                 <i class="ph-bold ph-plus"></i> Tambah Menu
@@ -321,7 +331,11 @@ $menu_items = $pdo->query("SELECT * FROM menu_items ORDER BY id DESC")->fetchAll
             document.getElementById('formColor').value = item.category_color;
             document.getElementById('formCurrentImage').value = item.image;
         }
-    </script>
 
+        function toggleSidebar() {
+            const sidebar = document.getElementById('mobileSidebar');
+            sidebar.classList.toggle('-translate-x-full');
+        }
+    </script>
 </body>
 </html>

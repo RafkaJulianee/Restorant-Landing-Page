@@ -48,8 +48,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" href="assets/img/hero/hero_square.png" type="image/x-icon">
-    <title><?php echo $settings['logo_text']; ?> - Makanan Sehat & Lezat</title>
+    <link rel="shortcut icon" href="assets/img/MyCode.png" type="image/png">
+    <title><?php echo $settings['logo_text']; ?>Jasa Pembuatan Landig Page </title>
+    <meta name="google-site-verification" content="ZU15wdbOMgpNHfmxvejXB6Gn2jkTR2CizburYJGOZw0" />
+
+    <meta name="description" content="MyCode ">
+<meta name="keywords" content="Jasa Pembuatan Landing Page MyCode">
+    <!-- Primary Meta Tags -->
+     <link rel="icon" href="https://mycodee.page.gd/assets/img/MyCode.png">
+     <meta property="og:site_name" content="MyCodee">
+    <meta name="title" content="<?php echo $settings['logo_text']; ?> - Makanan Sehat & Lezat">
+    <meta name="description" content="<?php echo strip_tags($hero['subtitle']); ?>">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="<?php echo (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']; ?>">
+    <meta property="og:title" content="<?php echo $settings['logo_text']; ?> - Makanan Sehat & Lezat">
+    <meta property="og:description" content="<?php echo strip_tags($hero['subtitle']); ?>">
+    <meta property="og:image" content="<?php echo (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://" . $_SERVER['HTTP_HOST'] . str_replace(basename($_SERVER['SCRIPT_NAME']), '', $_SERVER['SCRIPT_NAME']) . 'assets/img/MyCode.png'; ?>">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="<?php echo (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']; ?>">
+    <meta property="twitter:title" content="<?php echo $settings['logo_text']; ?> - Makanan Sehat & Lezat">
+    <meta property="twitter:description" content="<?php echo strip_tags($hero['subtitle']); ?>">
+    <meta property="twitter:image" content="<?php echo (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://" . $_SERVER['HTTP_HOST'] . str_replace(basename($_SERVER['SCRIPT_NAME']), '', $_SERVER['SCRIPT_NAME']) . 'assets/img/MyCode.png'; ?>">
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
