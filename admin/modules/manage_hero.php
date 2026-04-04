@@ -223,7 +223,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <div class="w-full md:w-1/3">
                             <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-4">Gambar Saat Ini</label>
                             <div class="aspect-square rounded-[2rem] overflow-hidden border-[8px] border-gray-50 shadow-xl relative group">
-                                <img src="../../<?php echo !empty($hero['main_image']) ? $hero['main_image'] : 'assets/img/hero_hd.png'; ?>" class="w-full h-full object-cover transition-transform group-hover:scale-110 duration-500">
+                                <img id="hero_image_preview" src="../../<?php echo !empty($hero['main_image']) ? $hero['main_image'] : 'assets/img/hero_hd.png'; ?>" class="w-full h-full object-cover transition-transform group-hover:scale-110 duration-500">
                                 <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white pointer-events-none">
                                     <i class="ph ph-magnifying-glass-plus text-3xl"></i>
                                 </div>
@@ -232,13 +232,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <div class="flex-1">
                             <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-4">Ganti Gambar Piring Hero</label>
                             <div class="relative group">
-                                <div class="w-full p-12 border-2 border-dashed border-gray-100 rounded-[2.5rem] text-center bg-gray-50 group-hover:bg-rose-50 group-hover:border-rose-200 transition-all cursor-pointer">
+                                <div class="w-full p-12 border-2 border-dashed border-gray-100 rounded-[2.5rem] text-center bg-gray-50 hover:bg-rose-50 hover:border-rose-200 transition-all cursor-pointer relative">
                                     <div class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center shadow-sm mx-auto mb-4 group-hover:scale-110 transition-transform">
                                         <i class="ph ph-upload-simple text-3xl text-brand-red"></i>
                                     </div>
                                     <p class="text-sm font-bold text-gray-700 mb-1">Klik untuk pilih file gambar baru</p>
                                     <p class="text-xs text-gray-400">Rekomendasi: Gambar PNG transparan 1000x1000px</p>
-                                    <input type="file" name="main_image" class="absolute inset-0 opacity-0 cursor-pointer">
+                                    <input type="file" name="main_image" id="main_image_input" accept="image/*" class="absolute inset-0 opacity-0 cursor-pointer w-full h-full" onchange="previewHeroImage(this)">
                                 </div>
                             </div>
                         </div>
@@ -260,6 +260,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         function toggleSidebar() {
             const sidebar = document.getElementById('mobileSidebar');
             sidebar.classList.toggle('-translate-x-full');
+        }
+
+        function previewHeroImage(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('hero_image_preview').src = e.target.result;
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
         }
     </script>
 </body>

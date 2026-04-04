@@ -279,10 +279,14 @@ $menu_items = $pdo->query("SELECT * FROM menu_items ORDER BY id DESC")->fetchAll
 
                 <div>
                     <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-3">Ganti Gambar Menu</label>
-                    <div class="relative group">
-                         <div class="w-full p-6 border-2 border-dashed border-gray-100 rounded-2xl text-center bg-gray-50 group-hover:bg-rose-50 group-hover:border-rose-200 transition-all">
+                    <div class="flex items-center gap-4 group">
+                         <div class="w-20 h-20 rounded-2xl overflow-hidden border border-gray-100 shadow-sm bg-gray-50 flex items-center justify-center shrink-0">
+                             <img id="menu_image_preview" src="" class="w-full h-full object-cover hidden">
+                             <i id="menu_image_icon" class="ph ph-image text-3xl text-gray-400"></i>
+                         </div>
+                         <div class="w-full p-6 border-2 border-dashed border-gray-100 rounded-2xl text-center bg-gray-50 hover:bg-rose-50 hover:border-rose-200 transition-all relative">
                              <p class="text-xs font-bold text-gray-400">Klik untuk upload gambar hidangan (PNG/JPG)</p>
-                             <input type="file" name="image" class="absolute inset-0 opacity-0 cursor-pointer">
+                             <input type="file" name="image" id="formImageInput" accept="image/*" class="absolute inset-0 opacity-0 cursor-pointer w-full h-full" onchange="previewMenuImage(this)">
                          </div>
                     </div>
                 </div>
@@ -314,6 +318,9 @@ $menu_items = $pdo->query("SELECT * FROM menu_items ORDER BY id DESC")->fetchAll
             document.getElementById('formRating').value = '';
             document.getElementById('formCurrentImage').value = '';
             document.getElementById('formColor').value = 'pink';
+            document.getElementById('formImageInput').value = '';
+            document.getElementById('menu_image_preview').classList.add('hidden');
+            document.getElementById('menu_image_icon').classList.remove('hidden');
         }
 
         function closeModal() {
@@ -330,6 +337,27 @@ $menu_items = $pdo->query("SELECT * FROM menu_items ORDER BY id DESC")->fetchAll
             document.getElementById('formRating').value = item.rating;
             document.getElementById('formColor').value = item.category_color;
             document.getElementById('formCurrentImage').value = item.image;
+            document.getElementById('formImageInput').value = '';
+            if (item.image) {
+                document.getElementById('menu_image_preview').src = '../../' + item.image;
+                document.getElementById('menu_image_preview').classList.remove('hidden');
+                document.getElementById('menu_image_icon').classList.add('hidden');
+            } else {
+                document.getElementById('menu_image_preview').classList.add('hidden');
+                document.getElementById('menu_image_icon').classList.remove('hidden');
+            }
+        }
+
+        function previewMenuImage(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('menu_image_preview').src = e.target.result;
+                    document.getElementById('menu_image_preview').classList.remove('hidden');
+                    document.getElementById('menu_image_icon').classList.add('hidden');
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
         }
 
         function toggleSidebar() {
