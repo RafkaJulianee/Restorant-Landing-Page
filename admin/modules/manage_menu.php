@@ -26,9 +26,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if (!empty($_FILES['image']['name'])) {
         $target_dir = "../../assets/img/uploads/";
-        $new_filename = "menu_" . time() . "_" . $_FILES["image"]["name"];
+        // Buat folder jika belum ada
+        if (!is_dir($target_dir)) {
+            mkdir($target_dir, 0755, true);
+        }
+        
+        $sanitize_name = preg_replace("/[^a-zA-Z0-9.\-_]/", "", basename($_FILES["image"]["name"]));
+        $new_filename = "menu_" . time() . "_" . $sanitize_name;
+        
         if (move_uploaded_file($_FILES["image"]["tmp_name"], $target_dir . $new_filename)) {
             $image_path = "assets/img/uploads/" . $new_filename;
+        } else {
+            $msg = "Warning: Data tersimpan, namun gambar gagal diupload. Cek izin folder uploads.";
         }
     }
 
@@ -37,13 +46,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $sql = "UPDATE menu_items SET name=?, description=?, price=?, rating=?, image=?, category_color=? WHERE id=?";
         $stmt = $pdo->prepare($sql);
         $stmt->execute([$name, $desc, $price, $rating, $image_path, $color, $id]);
-        $msg = "Menu berhasil diperbarui!";
+        if (empty($msg)) $msg = "Menu berhasil diperbarui!";
     } else {
         // Insert
         $sql = "INSERT INTO menu_items (name, description, price, rating, image, category_color) VALUES (?, ?, ?, ?, ?, ?)";
         $stmt = $pdo->prepare($sql);
         $stmt->execute([$name, $desc, $price, $rating, $image_path, $color]);
-        $msg = "Menu baru berhasil ditambahkan!";
+        if (empty($msg)) $msg = "Menu baru berhasil ditambahkan!";
     }
 }
 

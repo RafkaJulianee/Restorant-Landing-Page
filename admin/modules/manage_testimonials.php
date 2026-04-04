@@ -81,7 +81,7 @@ $testimonials = $pdo->query("SELECT * FROM testimonials ORDER BY created_at DESC
         
         <nav class="flex-1 px-6 space-y-2 mt-4">
             <div class="px-4 py-3 text-[10px] uppercase font-black text-gray-400 tracking-[0.2em] mb-2">Utama</div>
-            <a href="dashboard.php" class="flex items-center gap-4 px-5 py-4 rounded-2xl text-gray-500 hover:bg-gray-50 hover:text-brand-red transition-all">
+            <a href="../dashboard.php" class="flex items-center gap-4 px-5 py-4 rounded-2xl text-gray-500 hover:bg-gray-50 hover:text-brand-red transition-all">
                 <i class="ph ph-house-line text-2xl"></i> Dashboard
             </a>
             

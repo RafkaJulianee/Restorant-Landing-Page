@@ -1,10 +1,8 @@
 <?php
-// Configuration for Database Connection
-
-$host = 'localhost';
-$db   = 'restolandingpage';
-$user = 'root'; // default laragon
-$pass = '';     // default laragon
+$host = 'sql203.infinityfree.com';
+$db   = 'if0_41564029_restolandingpage';
+$user = 'if0_41564029';
+$pass = 'gCdDTgauFyD9'; // isi password dari InfinityFree
 $charset = 'utf8mb4';
 
 $dsn = "mysql:host=$host;dbname=$db;charset=$charset";
@@ -17,14 +15,12 @@ $options = [
 try {
      $pdo = new PDO($dsn, $user, $pass, $options);
 } catch (\PDOException $e) {
-     throw new \PDOException($e->getMessage(), (int)$e->getCode());
+     die("Koneksi gagal: " . $e->getMessage());
 }
 
 // System-wide constants
-define('SITE_URL', 'http://localhost/Restorant%20Landing%20Page/');
-define('UPLOAD_DIR', '../assets/img/');
+define('SITE_URL', 'https://mycodee.page.gd/');
 
-// Authentication check function
 function check_login() {
     if (session_status() === PHP_SESSION_NONE) {
         session_start();

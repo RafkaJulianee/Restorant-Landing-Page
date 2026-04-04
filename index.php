@@ -114,7 +114,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
 <body class="font-sans antialiased overflow-x-hidden relative">
 
     <!-- Floating WhatsApp Button -->
-    <a href="https://wa.me/<?php echo $settings['wa_number']; ?>?text=Halo%20<?php echo $settings['logo_text']; ?>,%20saya%20ingin%20memesan%20makanan!" target="_blank" rel="noopener noreferrer" 
+    <a href="https://wa.me/6285871444639?text=Halo%20<?php echo $settings['logo_text']; ?>,%20saya%20ingin%20memesan%20makanan!" target="_blank" rel="noopener noreferrer" 
        class="fixed bottom-6 right-6 z-50 bg-[#25D366] text-white p-4 rounded-full shadow-2xl hover:bg-[#1ebe57] hover:scale-110 transition-all duration-300 flex items-center justify-center group">
         <i class="ph-fill ph-whatsapp-logo text-3xl"></i>
         <span class="max-w-0 overflow-hidden whitespace-nowrap group-hover:max-w-xs transition-all duration-300 ease-in-out font-medium group-hover:ml-2 group-hover:mr-1">Pesan via WA</span>
@@ -142,7 +142,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
 
             <!-- Right Actions (WhatsApp Only) -->
             <div class="hidden md:flex items-center space-x-5">
-                <a href="https://wa.me/<?php echo $settings['wa_number']; ?>" target="_blank" class="bg-brand-red text-white px-6 py-2.5 rounded-full font-bold shadow-lg shadow-brand-red/20 hover:bg-rose-600 transition-all hover:scale-105 active:scale-95">
+                <a href="https://wa.me/6285871444639" target="_blank" class="bg-brand-red text-white px-6 py-2.5 rounded-full font-bold shadow-lg shadow-brand-red/20 hover:bg-rose-600 transition-all hover:scale-105 active:scale-95">
                     Pesan Sekarang
                 </a>
             </div>
@@ -203,10 +203,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                     </p>
 
                     <div class="flex flex-col sm:flex-row gap-6 items-center justify-center lg:justify-start w-full">
-                        <a href="#menu" class="group relative w-full sm:w-auto overflow-hidden bg-brand-red text-white px-10 py-5 rounded-2xl font-bold transition-all hover:scale-[1.02] active:scale-95 shadow-2xl shadow-brand-red/30">
+                        <a href="https://wa.me/6285871444639" target="_blank" class="group relative w-full sm:w-auto overflow-hidden bg-brand-red text-white px-10 py-5 rounded-2xl font-bold transition-all hover:scale-[1.02] active:scale-95 shadow-2xl shadow-brand-red/30">
                             <span class="relative z-10 flex items-center justify-center gap-2">
                                 <?php echo $hero['cta_primary']; ?>
-                                <i class="ph ph-arrow-right font-bold transition-transform group-hover:translate-x-1"></i>
+                                <i class="ph-bold ph-whatsapp-logo font-bold transition-transform group-hover:scale-110"></i>
                             </span>
                             <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
                         </a>
@@ -310,9 +310,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                         <p class="text-<?php echo $item['category_color']; ?>-100 text-sm mb-4"><?php echo $item['description']; ?></p>
                         <div class="flex justify-between items-center bg-white/20 rounded-full p-1 pl-4 backdrop-blur-sm">
                             <span class="font-bold text-lg">Rp <?php echo $item['price']; ?></span>
-                            <button class="bg-white text-brand-dark px-4 py-2 rounded-full text-xs font-bold hover:bg-brand-dark hover:text-white transition-colors flex items-center gap-1">
-                                Pesan <i class="ph ph-caret-right"></i>
-                            </button>
+                            <a href="https://wa.me/6285871444639?text=Halo,%20saya%20ingin%20pesan%20menu%20<?php echo urlencode($item['name']); ?>" target="_blank" class="bg-white text-brand-dark px-4 py-2 rounded-full text-xs font-bold hover:bg-brand-dark hover:text-white transition-colors flex items-center gap-1">
+                                Pesan <i class="ph-bold ph-whatsapp-logo"></i>
+                            </a>
                         </div>
                         <div class="absolute top-4 right-4 flex items-center gap-1 text-xs font-bold bg-white/20 px-2 py-1 rounded-full backdrop-blur-sm">
                             <i class="ph-fill ph-star text-yellow-300"></i> <?php echo number_format($item['rating'], 1); ?>
@@ -344,7 +344,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
 
                     <div class="col-span-1 relative rounded-3xl overflow-hidden shadow-lg group h-48 sm:h-56">
                          <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10 flex items-end p-4">
-                            <button class="bg-white/30 backdrop-blur-md text-white font-medium px-4 py-2 rounded-full w-full hover:bg-white hover:text-brand-dark transition-colors border border-white/50 text-sm uppercase">Pesan Sekarang</button>
+                            <a href="https://wa.me/6285871444639" target="_blank" class="bg-white/30 backdrop-blur-md text-white font-medium px-4 py-2 rounded-full w-full hover:bg-white hover:text-brand-dark transition-colors border border-white/50 text-sm uppercase text-center block">Pesan Sekarang</a>
                          </div>
                         <img src="assets/img/bento/bento_3.png" alt="Meatballs" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700">
                     </div>
@@ -497,7 +497,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                             <div class="w-12 h-12 rounded-full bg-orange-50 flex items-center justify-center shrink-0 text-brand-orange"><i class="ph-fill ph-phone text-2xl"></i></div>
                             <div>
                                 <h4 class="font-bold text-brand-dark mb-1">Telepon & WA</h4>
-                                <p class="text-brand-gray text-sm">+<?php echo $settings['wa_number']; ?></p>
+                                <p class="text-brand-gray text-sm">+6285871444639</p>
                                 <p class="text-brand-gray text-sm"><?php echo $settings['phone']; ?></p>
                             </div>
                         </div>

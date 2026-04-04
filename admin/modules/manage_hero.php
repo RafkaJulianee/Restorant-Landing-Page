@@ -22,12 +22,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Handle Image Upload
     if (!empty($_FILES['main_image']['name'])) {
         $target_dir = "../../assets/img/uploads/";
+        // Buat folder jika belum ada
+        if (!is_dir($target_dir)) {
+            mkdir($target_dir, 0755, true);
+        }
         $file_extension = strtolower(pathinfo($_FILES["main_image"]["name"], PATHINFO_EXTENSION));
         $new_filename = "hero_" . time() . "." . $file_extension;
         $target_file = $target_dir . $new_filename;
         
         if (move_uploaded_file($_FILES["main_image"]["tmp_name"], $target_file)) {
             $image_path = "assets/img/uploads/" . $new_filename;
+        } else {
+            $msg = "Warning: Data tersimpan, namun gambar gagal diupload. Cek izin folder uploads.";
         }
     }
 
@@ -39,7 +45,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
     $stmt = $pdo->prepare($sql);
     if ($stmt->execute([$title1, $title2, $title_italic, $subtitle, $cta_primary, $cta_secondary, $image_path, $discount])) {
-        $msg = "Konten Hero berhasil diperbarui!";
+        if (empty($msg)) $msg = "Konten Hero berhasil diperbarui!";
         // Refresh data
         $stmt = $pdo->query("SELECT * FROM hero_content WHERE id = 1");
         $hero = $stmt->fetch();
@@ -170,29 +176,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                             <div>
-                                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-3">Teks Badge Atas</label>
-                                <input type="text" name="discount_text" value="<?php echo $hero['discount_text']; ?>" required 
+                                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-3">Teks Badge Atas (Maks 30 Karakter)</label>
+                                <input type="text" name="discount_text" value="<?php echo $hero['discount_text']; ?>" required maxlength="30"
                                     class="w-full px-6 py-4 rounded-2xl border border-gray-100 bg-gray-50 focus:bg-white focus:border-brand-red outline-none transition-all shadow-inner font-bold text-gray-700">
                             </div>
                             <div>
-                                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-3">Judul Utama (Fokus/Miring)</label>
-                                <input type="text" name="title_italic" value="<?php echo $hero['title_italic']; ?>" required 
+                                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-3">Judul Utama (Fokus) (Maks 25 Karakter)</label>
+                                <input type="text" name="title_italic" value="<?php echo $hero['title_italic']; ?>" required maxlength="25"
                                     class="w-full px-6 py-4 rounded-2xl border border-gray-100 bg-gray-50 focus:bg-white focus:border-brand-red outline-none transition-all shadow-inner font-heading italic text-brand-red text-xl">
                             </div>
                             <div>
-                                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-3">Judul Baris 1</label>
-                                <input type="text" name="title_1" value="<?php echo $hero['title_1']; ?>" required 
+                                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-3">Judul Baris 1 (Maks 25 Karakter)</label>
+                                <input type="text" name="title_1" value="<?php echo $hero['title_1']; ?>" required maxlength="25"
                                     class="w-full px-6 py-4 rounded-2xl border border-gray-100 bg-gray-50 focus:bg-white focus:border-brand-red outline-none transition-all shadow-inner font-bold text-gray-700">
                             </div>
                             <div>
-                                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-3">Judul Baris 2</label>
-                                <input type="text" name="title_2" value="<?php echo $hero['title_2']; ?>" required 
+                                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-3">Judul Baris 2 (Maks 25 Karakter)</label>
+                                <input type="text" name="title_2" value="<?php echo $hero['title_2']; ?>" required maxlength="25"
                                     class="w-full px-6 py-4 rounded-2xl border border-gray-100 bg-gray-50 focus:bg-white focus:border-brand-red outline-none transition-all shadow-inner font-bold text-gray-700">
                             </div>
                         </div>
                         <div class="mt-8">
-                            <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-3">Subjudul (Deskripsi)</label>
-                            <textarea name="subtitle" rows="4" required 
+                            <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-3">Subjudul / Deskripsi (Maks 150 Karakter)</label>
+                            <textarea name="subtitle" rows="4" required maxlength="150"
                                 class="w-full px-6 py-4 rounded-2xl border border-gray-100 bg-gray-50 focus:bg-white focus:border-brand-red outline-none transition-all shadow-inner text-gray-600 leading-relaxed"><?php echo $hero['subtitle']; ?></textarea>
                         </div>
                     </div>
@@ -205,8 +211,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                             <div>
-                                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-3">Label Tombol Utama</label>
-                                <input type="text" name="cta_primary" value="<?php echo $hero['cta_primary']; ?>" required 
+                                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-3">Label Tombol Utama (Maks 25 Karakter)</label>
+                                <input type="text" name="cta_primary" value="<?php echo $hero['cta_primary']; ?>" required maxlength="25"
                                     class="w-full px-6 py-4 rounded-2xl border border-gray-100 bg-gray-50 focus:bg-white focus:border-brand-red outline-none transition-all shadow-inner font-bold text-gray-700">
                             </div>
                             <div>
