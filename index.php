@@ -49,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="assets/img/MyCode.png" type="image/png">
-    <title><?php echo $settings['logo_text']; ?>Jasa Pembuatan Landig Page </title>
+    <title><?php echo $settings['logo_text']; ?>MyCode|Jasa Pembuatan Landing Page</title>
     <meta name="google-site-verification" content="ZU15wdbOMgpNHfmxvejXB6Gn2jkTR2CizburYJGOZw0" />
 
     <meta name="description" content="MyCode ">
