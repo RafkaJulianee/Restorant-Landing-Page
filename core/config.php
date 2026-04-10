@@ -2,7 +2,7 @@
 $host = 'sql203.infinityfree.com';
 $db   = 'if0_41564029_restolandingpage';
 $user = 'if0_41564029';
-$pass = 'gCdDTgauFyD9'; // isi password dari InfinityFree
+$pass = 'gCdDTgauFyD9'; // isi password dari InfinityFee
 $charset = 'utf8mb4';
 
 $dsn = "mysql:host=$host;dbname=$db;charset=$charset";
