@@ -4,12 +4,13 @@
 const navbar = document.getElementById('navbar');
 if (navbar) {
     window.addEventListener('scroll', () => {
-        if (window.scrollY > 50) {
-            navbar.classList.add('shadow-md');
-            navbar.style.background = 'rgba(254, 248, 240, 0.95)';
+        if (window.scrollY > 20) {
+            navbar.classList.add('glass', 'shadow-sm');
+            navbar.classList.remove('bg-transparent');
+            navbar.style.padding = '12px 0';
         } else {
-            navbar.classList.remove('shadow-md');
-            navbar.style.background = 'rgba(254, 248, 240, 0.7)';
+            navbar.classList.remove('glass', 'shadow-sm');
+            navbar.style.padding = '16px 0';
         }
     });
 }
@@ -146,12 +147,12 @@ document.addEventListener('DOMContentLoaded', () => {
         card.innerHTML = `
             <div class="absolute top-4 left-4 bg-brand-red text-white text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider">Baru</div>
             <i class="ph-fill ph-quotes text-5xl text-orange-100 absolute top-6 right-6"></i>
-            <div class="flex gap-1 text-yellow-400 mb-6 text-xl mt-2">
+            <div class="flex gap-1 text-yellow-400 mb-6 text-xl">
                 ${buildStarHTML(rating)}
             </div>
             <p class="text-brand-gray mb-8 leading-relaxed">"${comment}"</p>
             <div class="flex items-center gap-4 border-t border-gray-100 pt-6">
-                <div class="w-12 h-12 rounded-xl ${color.bg} ${color.text} flex items-center justify-center font-bold text-xl shrink-0">${initials}</div>
+                <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-rose-50 to-rose-100 text-brand-red flex items-center justify-center font-bold text-2xl shrink-0 shadow-sm border border-white">${initials}</div>
                 <div>
                     <h4 class="font-bold text-brand-dark">${name}</h4>
                     <p class="text-[10px] font-bold text-brand-red uppercase tracking-widest mt-1 opacity-70">
@@ -263,6 +264,51 @@ document.addEventListener('DOMContentLoaded', () => {
                 }, 5000);
             });
         });
+    }
+    
+    const showMoreBtn = document.getElementById('show-more-testimonials');
+    if (showMoreBtn) {
+        // Defined in global scope or attached to window
+        window.toggleTestimonials = function(btn) {
+            const extra = document.querySelectorAll('.extra-testimonial');
+            if (!extra || extra.length === 0) return;
+            
+            const span = btn.querySelector('span');
+            const icon = btn.querySelector('i');
+            
+            // Check current state based on first extra card
+            const isCurrentlyHidden = extra[0].style.display === 'none';
+
+            if (isCurrentlyHidden) {
+                // SHOW
+                extra.forEach(card => {
+                    card.style.display = 'block';
+                    // Trigger reflow
+                    void card.offsetWidth;
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                });
+                if (span) span.textContent = 'Sembunyikan Ulasan';
+                if (icon) icon.classList.replace('ph-caret-down', 'ph-caret-up');
+                
+                // Only scroll if we are showing items
+                setTimeout(() => {
+                    extra[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }, 100);
+            } else {
+                // HIDE
+                extra.forEach(card => {
+                    card.style.opacity = '0';
+                    card.style.transform = 'translateY(20px)';
+                    setTimeout(() => {
+                        card.style.display = 'none';
+                    }, 500); // Wait for transition
+                });
+                if (span) span.textContent = 'Lihat Semua Ulasan';
+                if (icon) icon.classList.replace('ph-caret-up', 'ph-caret-down');
+                document.getElementById('testimonials').scrollIntoView({ behavior: 'smooth' });
+            }
+        };
     }
 
 });

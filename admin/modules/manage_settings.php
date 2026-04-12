@@ -37,7 +37,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pengaturan Web - Foody Central</title>
+    <title>Pengaturan Web - <?php echo $settings['logo_text']; ?></title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -75,11 +75,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <!-- Sidebar -->
     <aside id="mobileSidebar" class="w-72 bg-white border-r border-gray-100 flex flex-col fixed inset-y-0 left-0 z-50 transform -translate-x-full md:relative md:translate-x-0 transition-transform duration-300 h-screen">
         <div class="p-8 flex items-center justify-between gap-3 md:justify-start w-full">
-             <div class="flex items-center gap-3">
-                 <div class="bg-brand-red text-white p-2 rounded-2xl shadow-lg shadow-brand-red/20 ml-1">
-                    <i class="ph-fill ph-hamburger text-xl"></i>
+             <div class="flex items-center gap-4">
+                 <img src="../../assets/img/MyCode.png" alt="Logo" class="w-12 h-12 object-contain ml-1">
+                 <div class="flex flex-col">
+                     <span class="font-serif font-black text-2xl text-gray-800 tracking-tight leading-none"><?php echo $settings['logo_text']; ?></span>
+                     <span class="text-[9px] text-brand-red font-bold uppercase tracking-[0.2em] mt-1">Dashboard Admin</span>
                  </div>
-                 <span class="font-serif font-black text-2xl text-gray-800 tracking-tight">Foody Central</span>
              </div>
              <button onclick="toggleSidebar()" class="md:hidden text-gray-400 hover:text-brand-red">
                  <i class="ph ph-x text-2xl"></i>
@@ -116,36 +117,33 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
     </aside>
 
-    <main class="flex-1">
-        <header class="h-20 bg-white/80 backdrop-blur-md sticky top-0 z-30 border-b border-gray-100 flex items-center justify-between px-6 md:px-10">
-            <div class="flex items-center gap-4">
-                <button onclick="toggleSidebar()" class="md:hidden p-2 text-gray-600 hover:bg-gray-100 rounded-xl transition-all">
+    <main class="flex-1 flex flex-col min-w-0">
+        <header class="h-20 bg-white/80 backdrop-blur-md sticky top-0 z-30 border-b border-gray-100 flex items-center justify-between px-4 md:px-10 shrink-0">
+            <div class="flex items-center gap-3 md:gap-4 overflow-hidden">
+                <button onclick="toggleSidebar()" class="md:hidden p-2 text-gray-600 hover:bg-gray-100 rounded-xl transition-all shrink-0">
                     <i class="ph-bold ph-list text-2xl"></i>
                 </button>
-                <div>
-                    <h1 class="text-xl font-serif font-bold text-gray-800">Pengaturan Umum Website</h1>
-                    <p class="text-[10px] text-gray-400 font-bold uppercase tracking-wider hidden sm:block">Konfigurasi identitas dan kontak restoran</p>
+                <div class="truncate">
+                    <h1 class="text-lg md:text-xl font-serif font-bold text-gray-800 truncate">Pengaturan Umum</h1>
+                    <p class="text-[10px] text-gray-400 font-bold uppercase tracking-wider hidden lg:block">Konfigurasi identitas restoran Anda</p>
                 </div>
             </div>
-             <a href="../../index.php" target="_blank" class="flex items-center gap-2 text-xs font-bold text-brand-red bg-rose-50 px-4 py-2 rounded-full hover:bg-rose-100 transition-all border border-rose-100">
-                <i class="ph ph-arrow-square-out"></i> Pratinjau Web
+             <a href="../../index.php" target="_blank" class="flex items-center gap-2 text-[10px] md:text-xs font-bold text-brand-red bg-rose-50 px-3 md:px-4 py-2 rounded-full hover:bg-rose-100 transition-all border border-rose-100 shrink-0">
+                <i class="ph ph-arrow-square-out"></i> <span class="hidden md:inline">Pratinjau Web</span>
              </a>
         </header>
 
-        <div class="p-10">
+        <div class="p-5 md:p-10">
             <?php if($msg): ?>
-                <div class="bg-emerald-50 text-emerald-600 p-5 rounded-3xl mb-8 flex items-center gap-4 border border-emerald-100 shadow-sm animate-fade-in">
-                    <div class="w-10 h-10 bg-emerald-500 text-white rounded-full flex items-center justify-center shadow-lg shadow-emerald-200">
+                <div class="bg-emerald-50 text-emerald-600 p-5 rounded-3xl mb-8 flex items-center gap-4 border border-emerald-100 shadow-sm animate-fade-in text-sm font-bold">
+                    <div class="w-10 h-10 bg-emerald-500 text-white rounded-full flex items-center justify-center shadow-lg shadow-emerald-200 shrink-0">
                         <i class="ph-bold ph-check text-xl"></i>
                     </div>
-                    <div>
-                        <p class="font-bold">Berhasil!</p>
-                        <p class="text-sm opacity-80"><?php echo $msg; ?></p>
-                    </div>
+                    <p><?php echo $msg; ?></p>
                 </div>
             <?php endif; ?>
 
-            <div class="bg-white rounded-[2.5rem] p-10 shadow-sm border border-gray-100 lg:max-w-5xl">
+            <div class="bg-white rounded-[2rem] md:rounded-[2.5rem] p-6 md:p-10 shadow-sm border border-gray-100 lg:max-w-5xl">
                 <form method="POST" class="space-y-12">
                     
                     <!-- Identity Section -->

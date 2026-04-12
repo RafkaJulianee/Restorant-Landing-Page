@@ -6,10 +6,15 @@ body {
 /* ==============================
    Custom Menu Card Colors (Vibrant)
 ============================== */
-.card-pink   { background: linear-gradient(145deg, #fb7185, #f43f5e); }
-.card-orange { background: linear-gradient(145deg, #fb923c, #f97316); }
-.card-green  { background: linear-gradient(145deg, #4ade80, #22c55e); }
-.card-purple { background: linear-gradient(145deg, #a78bfa, #8b5cf6); }
+.card-pink   { background: linear-gradient(145deg, #FE285B, #F62B84); }
+.card-orange { background: linear-gradient(145deg, #FF6B2C, #F97316); }
+.card-green  { background: linear-gradient(145deg, #22C55E, #10B981); }
+.card-purple { background: linear-gradient(145deg, #8B5CF6, #6366F1); }
+.card-blue   { background: linear-gradient(145deg, #3B82F6, #2563EB); }
+.card-red    { background: linear-gradient(145deg, #EF4444, #DC2626); }
+.card-yellow { background: linear-gradient(145deg, #F59E0B, #D97706); }
+.card-indigo { background: linear-gradient(145deg, #6366F1, #4F46E5); }
+.card-cyan   { background: linear-gradient(145deg, #06B6D4, #0891B2); }
 
 /* ==============================
    Navbar Typography (Premium)
@@ -31,16 +36,30 @@ body {
 /* ==============================
    Hero Special Components
 ============================== */
+.glass {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+
 .hero-glass-card {
-    background: rgba(255, 255, 255, 0.6);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.4);
-    border-radius: 1.5rem;
+    background: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 2rem;
     box-shadow: 
-        0 10px 25px -5px rgba(0, 0, 0, 0.05),
-        0 8px 10px -6px rgba(0, 0, 0, 0.05),
-        inset 0 0 0 1px rgba(255, 255, 255, 0.3);
+        0 20px 40px -15px rgba(0, 0, 0, 0.05),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.4);
+}
+
+.card-vibrant {
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.card-vibrant:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.1);
 }
 
 /* ==============================
@@ -73,6 +92,16 @@ body {
 .animate-float-slow { animation: float-slow 8s ease-in-out infinite; }
 .animate-float-reverse { animation: float-reverse 4s ease-in-out infinite; }
 .animate-fade-in-down { animation: fade-in-down 1s ease-out forwards; }
+
+.extra-testimonial {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.extra-testimonial:not(.hidden) {
+    opacity: 1;
+    transform: translateY(0);
+}
 
 
 

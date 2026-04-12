@@ -2,6 +2,10 @@
 require_once '../../core/config.php';
 check_login();
 
+// Fetch settings for branding
+$stmt_settings = $pdo->query("SELECT logo_text FROM settings WHERE id = 1");
+$site_name = $stmt_settings->fetchColumn();
+
 $msg = '';
 
 // Handle Delete
@@ -64,7 +68,7 @@ $menu_items = $pdo->query("SELECT * FROM menu_items ORDER BY id DESC")->fetchAll
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kelola Menu - Foody Central</title>
+    <title>Kelola Menu - <?php echo $site_name; ?></title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -96,17 +100,33 @@ $menu_items = $pdo->query("SELECT * FROM menu_items ORDER BY id DESC")->fetchAll
             }
         }
     </script>
+    <style>
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #e2e8f0;
+            border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #cbd5e1;
+        }
+    </style>
 </head>
 <body class="bg-brand-light font-sans antialiased min-h-screen flex">
 
     <!-- Sidebar -->
     <aside id="mobileSidebar" class="w-72 bg-white border-r border-gray-100 flex flex-col fixed inset-y-0 left-0 z-50 transform -translate-x-full md:relative md:translate-x-0 transition-transform duration-300 h-screen">
         <div class="p-8 flex items-center justify-between gap-3 md:justify-start w-full">
-             <div class="flex items-center gap-3">
-                 <div class="bg-brand-red text-white p-2 rounded-2xl shadow-lg shadow-brand-red/20 ml-1">
-                    <i class="ph-fill ph-hamburger text-xl"></i>
+             <div class="flex items-center gap-4">
+                 <img src="../../assets/img/MyCode.png" alt="Logo" class="w-12 h-12 object-contain ml-1">
+                 <div class="flex flex-col">
+                     <span class="font-serif font-black text-2xl text-gray-800 tracking-tight leading-none"><?php echo $site_name; ?></span>
+                     <span class="text-[9px] text-brand-red font-bold uppercase tracking-[0.2em] mt-1">Dashboard Admin</span>
                  </div>
-                 <span class="font-serif font-black text-2xl text-gray-800 tracking-tight">Foody Central</span>
              </div>
              <button onclick="toggleSidebar()" class="md:hidden text-gray-400 hover:text-brand-red">
                  <i class="ph ph-x text-2xl"></i>
@@ -143,34 +163,34 @@ $menu_items = $pdo->query("SELECT * FROM menu_items ORDER BY id DESC")->fetchAll
         </div>
     </aside>
 
-    <main class="flex-1">
-        <header class="h-20 bg-white/80 backdrop-blur-md sticky top-0 z-30 border-b border-gray-100 flex items-center justify-between px-6 md:px-10">
-            <div class="flex items-center gap-4">
-                <button onclick="toggleSidebar()" class="md:hidden p-2 text-gray-600 hover:bg-gray-100 rounded-xl transition-all">
+    <main class="flex-1 flex flex-col min-w-0">
+        <header class="h-20 bg-white/80 backdrop-blur-md sticky top-0 z-30 border-b border-gray-100 flex items-center justify-between px-4 md:px-10 shrink-0">
+            <div class="flex items-center gap-3 md:gap-4 overflow-hidden">
+                <button onclick="toggleSidebar()" class="md:hidden p-2 text-gray-600 hover:bg-gray-100 rounded-xl transition-all shrink-0">
                     <i class="ph-bold ph-list text-2xl"></i>
                 </button>
-                <div>
-                    <h1 class="text-xl font-serif font-bold text-gray-800">Manajemen Menu Makanan</h1>
-                    <p class="text-[10px] text-gray-400 font-bold uppercase tracking-wider hidden sm:block">Kelola daftar hidangan restoran Anda</p>
+                <div class="truncate">
+                    <h1 class="text-lg md:text-xl font-serif font-bold text-gray-800 truncate">Manajemen Menu Makanan</h1>
+                    <p class="text-[10px] text-gray-400 font-bold uppercase tracking-wider hidden lg:block">Kelola daftar hidangan restoran Anda</p>
                 </div>
             </div>
-            <button onclick="openModal()" class="bg-brand-red text-white text-xs font-black px-6 py-3 rounded-xl hover:bg-rose-600 transition-all shadow-lg shadow-brand-red/30 flex items-center gap-2 uppercase tracking-widest">
-                <i class="ph-bold ph-plus"></i> Tambah Menu
+            <button onclick="openModal()" class="bg-brand-red text-white text-[10px] md:text-xs font-black px-4 md:px-6 py-3 rounded-xl hover:bg-rose-600 transition-all shadow-lg shadow-brand-red/30 flex items-center gap-2 uppercase tracking-widest shrink-0">
+                <i class="ph-bold ph-plus"></i> <span class="hidden sm:inline">Tambah Menu</span>
             </button>
         </header>
 
-        <div class="p-10">
+        <div class="p-5 md:p-10">
             <?php if($msg): ?>
-                <div class="bg-emerald-50 text-emerald-600 p-5 rounded-3xl mb-8 flex items-center gap-4 border border-emerald-100 shadow-sm animate-fade-in">
-                    <div class="w-10 h-10 bg-emerald-500 text-white rounded-full flex items-center justify-center shadow-lg shadow-emerald-200">
+                <div class="bg-emerald-50 text-emerald-600 p-5 rounded-3xl mb-8 flex items-center gap-4 border border-emerald-100 shadow-sm animate-fade-in text-sm font-bold">
+                    <div class="w-10 h-10 bg-emerald-500 text-white rounded-full flex items-center justify-center shadow-lg shadow-emerald-200 shrink-0">
                         <i class="ph-bold ph-check text-xl"></i>
                     </div>
-                    <p class="font-bold"><?php echo $msg; ?></p>
+                    <p><?php echo $msg; ?></p>
                 </div>
             <?php endif; ?>
 
-            <div class="bg-white rounded-[2.5rem] shadow-sm border border-gray-100 overflow-hidden">
-                <div class="overflow-x-auto">
+            <div class="bg-white rounded-[2rem] md:rounded-[2.5rem] shadow-sm border border-gray-100 overflow-hidden">
+                <div class="overflow-x-auto scrollbar-hide">
                     <table class="w-full text-left">
                         <thead class="bg-gray-50/50 border-b border-gray-100">
                             <tr>
@@ -233,16 +253,17 @@ $menu_items = $pdo->query("SELECT * FROM menu_items ORDER BY id DESC")->fetchAll
     </main>
 
     <!-- Modal Form -->
-    <div id="modal" class="fixed inset-0 bg-brand-dark/40 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-white rounded-[2.5rem] w-full max-w-xl overflow-hidden shadow-2xl animate-fade-in border border-white/20">
-            <div class="p-8 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
+    <div id="modal" class="fixed inset-0 bg-brand-dark/60 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-[2rem] w-full max-w-xl max-h-[90vh] overflow-hidden shadow-2xl animate-fade-in border border-white/20 flex flex-col">
+            <div class="p-6 border-b border-gray-100 flex justify-between items-center bg-gray-50/50 shrink-0">
                 <div>
                    <h2 id="modalTitle" class="font-serif font-black text-2xl text-gray-800">Tambah Menu Baru</h2>
                    <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mt-1">Lengkapi detail hidangan</p>
                 </div>
                 <button onclick="closeModal()" class="w-10 h-10 rounded-full bg-white text-gray-400 hover:text-brand-red flex items-center justify-center shadow-sm transition-all"><i class="ph ph-x text-xl"></i></button>
             </div>
-            <form method="POST" enctype="multipart/form-data" class="p-10 space-y-8">
+            <div class="overflow-y-auto p-6 lg:p-10 custom-scrollbar">
+                <form method="POST" enctype="multipart/form-data" class="space-y-6">
                 <input type="hidden" name="id" id="formId">
                 <input type="hidden" name="current_image" id="formCurrentImage">
                 
@@ -278,10 +299,15 @@ $menu_items = $pdo->query("SELECT * FROM menu_items ORDER BY id DESC")->fetchAll
                         <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-3">Warna Kategori</label>
                         <select name="category_color" id="formColor" 
                                 class="w-full px-6 py-4 rounded-2xl border border-gray-100 bg-gray-50 focus:bg-white focus:border-brand-red outline-none transition-all shadow-inner font-bold text-gray-700 appearance-none">
-                            <option value="pink">Pink (Utama)</option>
+                            <option value="pink">Pink (Imut/Lucuy)</option>
                             <option value="orange">Orange (Pedas/Hangat)</option>
                             <option value="green">Green (Healthy/Salad)</option>
                             <option value="purple">Purple (Minuman/Dessert)</option>
+                            <option value="blue">Blue (Fresh/Seafood)</option>
+                            <option value="red">Red (Hot/Spicy)</option>
+                            <option value="yellow">Yellow (Curry/Rice)</option>
+                            <option value="indigo">Indigo (Premium/Luxury)</option>
+                            <option value="cyan">Cyan (Cold Drinks)</option>
                         </select>
                     </div>
                 </div>
@@ -309,8 +335,8 @@ $menu_items = $pdo->query("SELECT * FROM menu_items ORDER BY id DESC")->fetchAll
                             class="px-8 py-5 rounded-2xl bg-slate-100 text-slate-500 font-bold hover:bg-slate-200 transition-all uppercase tracking-widest text-xs">
                         Batal
                     </button>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
     </div>
 
