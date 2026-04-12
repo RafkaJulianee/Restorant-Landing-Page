@@ -125,9 +125,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
         <div class="container mx-auto px-6 py-4 flex justify-between items-center">
             <!-- Logo -->
             <a href="#" class="flex items-center gap-2">
-                <div class="bg-brand-red text-white p-1.5 rounded-full">
-                    <i class="ph-fill ph-hamburger text-xl"></i>
-                </div>
+                <img src="assets/img/MyCode.png" alt="Logo" class="w-10 h-10 object-contain">
                 <span class="font-bold text-2xl text-brand-red tracking-tight"><?php echo $settings['logo_text']; ?></span>
             </a>
 
@@ -540,9 +538,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                 
                 <div class="lg:col-span-1">
                     <a href="#" class="flex items-center gap-2 mb-6">
-                        <div class="bg-white text-brand-red p-1.5 rounded-full">
-                            <i class="ph-fill ph-hamburger text-xl"></i>
-                        </div>
+                        <img src="assets/img/MyCode.png" alt="Logo" class="w-10 h-10 object-contain">
                         <span class="font-bold text-2xl tracking-tight"><?php echo $settings['logo_text']; ?></span>
                     </a>
                     <p class="text-gray-400 text-sm mb-6 leading-relaxed">
