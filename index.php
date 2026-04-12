@@ -1,5 +1,5 @@
 <?php
-require_once 'core/config.php';
+require_once 'config.php';
 
 // Fetch Site Settings
 $stmt = $pdo->query("SELECT * FROM settings WHERE id = 1");
@@ -25,7 +25,7 @@ $testimonials = $stmt->fetchAll();
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'add_review') {
     header('Content-Type: application/json');
     $name = trim($_POST['name']);
-    $role = ""; // Profesi dihapus sesuai permintaan
+    $role = trim($_POST['role']);
     $rating = (int)$_POST['rating'];
     $comment = trim($_POST['comment']);
 
@@ -48,31 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" href="assets/img/MyCode.png" type="image/png">
-    <title><?php echo $settings['logo_text']; ?>MyCode|Jasa Pembuatan Landing Page</title>
-    <meta name="google-site-verification" content="ZU15wdbOMgpNHfmxvejXB6Gn2jkTR2CizburYJGOZw0" />
-
-    <meta name="description" content="MyCode ">
-<meta name="keywords" content="Jasa Pembuatan Landing Page MyCode">
-    <!-- Primary Meta Tags -->
-     <link rel="icon" href="https://mycodee.page.gd/assets/img/MyCode.png">
-     <meta property="og:site_name" content="MyCodee">
-    <meta name="title" content="<?php echo $settings['logo_text']; ?> - Makanan Sehat & Lezat">
-    <meta name="description" content="<?php echo strip_tags($hero['subtitle']); ?>">
-
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="<?php echo (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']; ?>">
-    <meta property="og:title" content="<?php echo $settings['logo_text']; ?> - Makanan Sehat & Lezat">
-    <meta property="og:description" content="<?php echo strip_tags($hero['subtitle']); ?>">
-    <meta property="og:image" content="<?php echo (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://" . $_SERVER['HTTP_HOST'] . str_replace(basename($_SERVER['SCRIPT_NAME']), '', $_SERVER['SCRIPT_NAME']) . 'assets/img/MyCode.png'; ?>">
-
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="<?php echo (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']; ?>">
-    <meta property="twitter:title" content="<?php echo $settings['logo_text']; ?> - Makanan Sehat & Lezat">
-    <meta property="twitter:description" content="<?php echo strip_tags($hero['subtitle']); ?>">
-    <meta property="twitter:image" content="<?php echo (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://" . $_SERVER['HTTP_HOST'] . str_replace(basename($_SERVER['SCRIPT_NAME']), '', $_SERVER['SCRIPT_NAME']) . 'assets/img/MyCode.png'; ?>">
+    <title><?php echo $settings['logo_text']; ?> - Makanan Sehat & Lezat</title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -80,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <!-- Phosphor Icons -->
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
@@ -92,7 +68,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                     fontFamily: {
                         sans: ['Inter', 'sans-serif'],
                         serif: ['Outfit', 'sans-serif'],
-                        heading: ['"Playfair Display"', 'serif'],
                     },
                     colors: {
                         brand: {
@@ -114,7 +89,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
 <body class="font-sans antialiased overflow-x-hidden relative">
 
     <!-- Floating WhatsApp Button -->
-    <a href="https://wa.me/6285871444639?text=Halo%20<?php echo $settings['logo_text']; ?>,%20saya%20ingin%20memesan%20makanan!" target="_blank" rel="noopener noreferrer" 
+    <a href="https://wa.me/<?php echo $settings['wa_number']; ?>?text=Halo%20<?php echo $settings['logo_text']; ?>,%20saya%20ingin%20memesan%20makanan!" target="_blank" rel="noopener noreferrer" 
        class="fixed bottom-6 right-6 z-50 bg-[#25D366] text-white p-4 rounded-full shadow-2xl hover:bg-[#1ebe57] hover:scale-110 transition-all duration-300 flex items-center justify-center group">
         <i class="ph-fill ph-whatsapp-logo text-3xl"></i>
         <span class="max-w-0 overflow-hidden whitespace-nowrap group-hover:max-w-xs transition-all duration-300 ease-in-out font-medium group-hover:ml-2 group-hover:mr-1">Pesan via WA</span>
@@ -125,7 +100,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
         <div class="container mx-auto px-6 py-4 flex justify-between items-center">
             <!-- Logo -->
             <a href="#" class="flex items-center gap-2">
-                <img src="assets/img/MyCode.png" alt="Logo" class="w-10 h-10 object-contain">
+                <div class="bg-brand-red text-white p-1.5 rounded-full">
+                    <i class="ph-fill ph-hamburger text-xl"></i>
+                </div>
                 <span class="font-bold text-2xl text-brand-red tracking-tight"><?php echo $settings['logo_text']; ?></span>
             </a>
 
@@ -138,11 +115,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                 <a href="#contact" class="hover:text-brand-red transition-colors">Kontak</a>
             </div>
 
-            <!-- Right Actions (WhatsApp Only) -->
-            <div class="hidden md:flex items-center space-x-5">
-                <a href="https://wa.me/6285871444639" target="_blank" class="bg-brand-red text-white px-6 py-2.5 rounded-full font-bold shadow-lg shadow-brand-red/20 hover:bg-rose-600 transition-all hover:scale-105 active:scale-95">
-                    Pesan Sekarang
-                </a>
+            <!-- Right Actions (Search & Admin Only) -->
+            <div class="hidden md:flex items-center space-x-5 text-brand-dark">
+                <button class="hover:text-brand-red transition-colors"><i class="ph ph-magnifying-glass text-2xl"></i></button>
+                <a href="admin/login.php" class="hover:text-brand-red transition-colors"><i class="ph ph-user-circle text-2xl"></i></a>
             </div>
 
             <!-- Mobile Menu Toggle -->
@@ -158,132 +134,62 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
             <a href="#menu" class="font-medium text-lg border-b border-gray-50 pb-2">Menu</a>
             <a href="#testimonials" class="font-medium text-lg border-b border-gray-50 pb-2">Testimoni</a>
             <a href="#contact" class="font-medium text-lg border-b border-gray-50 pb-2">Kontak</a>
+            <a href="admin/login.php" class="font-medium text-lg text-brand-red">Admin Panel</a>
         </div>
     </nav>
 
-    <!-- Hero Section (New Concept: Premium Dining) -->
-    <section id="home" class="relative pt-32 pb-20 lg:pt-44 lg:pb-32 overflow-hidden bg-brand-light">
-        <!-- Modern Decorative Elements -->
-        <div class="absolute -top-24 -right-24 w-[450px] h-[450px] bg-brand-red/10 rounded-full blur-[100px] -z-10"></div>
-        <div class="absolute -bottom-24 -left-24 w-[350px] h-[350px] bg-brand-orange/10 rounded-full blur-[80px] -z-10"></div>
-        
-        <!-- Abstract Shape Decor -->
-        <div class="absolute top-1/4 right-0 opacity-10 pointer-events-none -z-10">
-            <svg width="400" height="400" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M150 100C150 138.66 118.66 170 80 170C41.3401 170 10 138.66 10 100C10 61.3401 41.3401 30 80 30C118.66 30 150 61.3401 150 100Z" fill="#F43F5E"/>
-            </svg>
-        </div>
+    <!-- Hero Section -->
+    <section id="home" class="pt-32 pb-20 lg:pt-40 lg:pb-28 overflow-hidden">
+        <div class="container mx-auto px-6 flex flex-col-reverse lg:flex-row items-center gap-12 lg:gap-8">
+            
+            <!-- Hero Text -->
+            <div class="w-full lg:w-1/2 flex flex-col items-center lg:items-start text-center lg:text-left z-10">
+                <h1 class="font-serif text-4xl sm:text-5xl lg:text-7xl font-bold leading-tight mb-6 text-brand-dark">
+                    <?php echo $hero['title_1']; ?> <br/> 
+                    <?php echo $hero['title_2']; ?> <br/>
+                    <span class="text-brand-gray font-normal italic"><?php echo $hero['title_italic']; ?></span>
+                </h1>
+                <p class="text-brand-gray text-base sm:text-lg mb-10 max-w-md">
+                    <?php echo $hero['subtitle']; ?>
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 items-center">
+                    <a href="#menu" class="bg-brand-red text-white px-8 py-3.5 rounded-full font-medium shadow-lg shadow-brand-red/30 hover:bg-rose-600 transition-colors hover:-translate-y-1 transform w-full sm:w-auto text-center">
+                        <?php echo $hero['cta_primary']; ?>
+                    </a>
+                    <a href="#contact" class="flex items-center gap-3 text-brand-dark font-medium hover:text-brand-red transition-colors group">
+                        <div class="w-12 h-12 rounded-full bg-white shadow-md flex items-center justify-center group-hover:scale-110 transition-transform">
+                            <i class="ph-fill ph-book-open text-xl text-brand-dark group-hover:text-brand-red"></i>
+                        </div>
+                        <?php echo $hero['cta_secondary']; ?>
+                    </a>
+                </div>
+            </div>
 
-        <div class="max-w-7xl mx-auto px-6 relative">
-            <div class="flex flex-col lg:flex-row items-center gap-16 lg:gap-4">
+            <!-- Hero Image & Decorations -->
+            <div class="w-full lg:w-1/2 relative flex justify-center items-center mt-10 lg:mt-0">
+                <div class="absolute w-full h-[120%] bg-brand-orange/10 rounded-full blur-3xl -z-10"></div>
                 
-                <!-- Hero Text (Left) -->
-                <div class="w-full lg:w-[55%] flex flex-col items-center lg:items-start text-center lg:text-left z-20">
-                    <!-- Premium Badge -->
-                    <div class="inline-flex items-center gap-2 bg-white px-4 py-2 rounded-full border border-orange-100 shadow-sm mb-6 animate-fade-in-down">
-                        <span class="flex h-2 w-2 rounded-full bg-brand-red animate-pulse"></span>
-                        <span class="text-xs font-bold uppercase tracking-widest text-brand-dark/70"><?php echo $hero['discount_text']; ?></span>
-                    </div>
-
-                    <h1 class="font-heading text-5xl sm:text-6xl lg:text-[5.5rem] font-bold leading-[1] mb-6 text-brand-dark tracking-tight">
-                        <?php echo $hero['title_1']; ?> <br/>
-                        <span class="relative inline-block text-brand-red italic">
-                            <?php echo $hero['title_italic']; ?>
-                            <svg class="absolute -bottom-2 left-0 w-full h-3 text-orange-200 -z-10" viewBox="0 0 100 10" preserveAspectRatio="none">
-                                <path d="M0 5 Q 50 0 100 5" stroke="currentColor" stroke-width="4" fill="transparent" />
-                            </svg>
-                        </span> <br/>
-                        <?php echo $hero['title_2']; ?>
-                    </h1>
-
-                    <p class="text-brand-gray text-lg lg:text-xl mb-10 max-w-xl leading-relaxed font-light">
-                        <?php echo $hero['subtitle']; ?>
-                    </p>
-
-                    <div class="flex flex-col sm:flex-row gap-6 items-center justify-center lg:justify-start w-full">
-                        <a href="https://wa.me/6285871444639" target="_blank" class="group relative w-full sm:w-auto overflow-hidden bg-brand-red text-white px-10 py-5 rounded-2xl font-bold transition-all hover:scale-[1.02] active:scale-95 shadow-2xl shadow-brand-red/30">
-                            <span class="relative z-10 flex items-center justify-center gap-2">
-                                <?php echo $hero['cta_primary']; ?>
-                                <i class="ph-bold ph-whatsapp-logo font-bold transition-transform group-hover:scale-110"></i>
-                            </span>
-                            <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
-                        </a>
-                    </div>
-
-                    <!-- Trust Indicators -->
-                    <div class="mt-14 pt-8 border-t border-brand-orange/20 flex flex-wrap justify-center lg:justify-start gap-8 opacity-70">
-                        <div class="flex items-center gap-2">
-                            <i class="ph-fill ph-check-circle text-brand-green text-xl"></i>
-                            <span class="text-sm font-medium">Bahan Organik</span>
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <i class="ph-fill ph-check-circle text-brand-green text-xl"></i>
-                            <span class="text-sm font-medium">Koki Berlisensi</span>
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <i class="ph-fill ph-check-circle text-brand-green text-xl"></i>
-                            <span class="text-sm font-medium">Pengiriman Cepat</span>
-                        </div>
+                <div class="relative w-full aspect-video z-10 animate-float translate-y-0">
+                    <img src="<?php echo $hero['main_image']; ?>" alt="Hero" class="w-full h-full object-cover rounded-[2rem] shadow-2xl border-0 sm:border-8 border-white blur-sm hover:blur-none transition-all duration-500">
+                    
+                    <div class="absolute -top-5 -right-2 sm:-right-6 bg-brand-green text-white w-20 h-20 sm:w-24 sm:h-24 rounded-full flex flex-col items-center justify-center font-bold shadow-lg transform rotate-12 z-20 hover:scale-110 transition-transform">
+                        <span class="text-xl sm:text-2xl"><?php echo substr($hero['discount_text'], 0, 3); ?></span>
+                        <span class="text-sm sm:text-base"><?php echo substr($hero['discount_text'], 4); ?></span>
                     </div>
                 </div>
 
-                <!-- Hero Plate (Right) -->
-                <div class="w-full lg:w-[45%] relative flex justify-center items-center">
-                    <!-- Glow Behind Plate -->
-                    <div class="absolute inset-0 bg-brand-orange/20 rounded-full blur-[120px] scale-75 opacity-50"></div>
-                    
-                    <div class="relative w-full max-w-[550px] aspect-square z-10 p-4 group">
-                        <!-- Floating Garnish Decoration -->
-                        <div class="absolute -top-10 -left-10 w-20 h-20 text-brand-green/20 opacity-0 group-hover:opacity-100 transition-opacity duration-1000 animate-float-slow">
-                            <i class="ph-fill ph-leaf text-6xl rotate-45"></i>
-                        </div>
-                        <div class="absolute -bottom-10 -right-10 w-20 h-20 text-brand-orange/20 opacity-0 group-hover:opacity-100 transition-opacity duration-1000 animate-float-reverse">
-                            <i class="ph-fill ph-leaf text-6xl -rotate-12"></i>
-                        </div>
-
-                        <div class="w-full h-full rounded-[5rem] border-[12px] border-white shadow-2xl overflow-hidden animate-float-slow transition-transform hover:scale-105 duration-700 relative z-10 bg-white">
-                             <img src="<?php echo !empty($hero['main_image']) ? $hero['main_image'] : 'assets/img/hero/hero_premium.png'; ?>" alt="Premium Gourmet Dish" 
-                                  class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110">
-                        </div>
-                        
-                        <!-- Floating Engagement Card 1: Customer Rating -->
-                        <div class="absolute -top-4 -right-4 lg:-right-8 animate-float delay-75 hero-glass-card p-5 z-20 flex items-center gap-4 transition-transform hover:scale-105">
-                            <div class="flex -space-x-2">
-                                <div class="w-10 h-10 rounded-lg border-2 border-white bg-slate-200"></div>
-                                <div class="w-10 h-10 rounded-lg border-2 border-white bg-slate-300"></div>
-                                <div class="w-10 h-10 rounded-lg border-2 border-white bg-slate-400"></div>
-                            </div>
-                            <div>
-                                <div class="flex items-center gap-1 text-yellow-500 mb-0.5">
-                                    <i class="ph-fill ph-star"></i>
-                                    <i class="ph-fill ph-star"></i>
-                                    <i class="ph-fill ph-star"></i>
-                                    <i class="ph-fill ph-star"></i>
-                                    <i class="ph-fill ph-star"></i>
-                                </div>
-                                <p class="text-[10px] font-bold text-brand-dark uppercase tracking-wider">10K+ Pelanggan Puas</p>
-                            </div>
-                        </div>
-
-                        <!-- Floating Engagement Card 2: Calories/Nutrients -->
-                        <div class="absolute -bottom-8 -left-4 lg:-left-12 animate-float-reverse hero-glass-card p-5 z-20 flex items-center gap-4 transition-transform hover:scale-105">
-                            <div class="w-12 h-12 rounded-xl bg-orange-100 flex items-center justify-center text-brand-orange shadow-inner">
-                                <i class="ph-fill ph-leaf text-2xl"></i>
-                            </div>
-                            <div>
-                                <p class="text-brand-dark font-black text-xl leading-none">100%</p>
-                                <p class="text-[10px] text-brand-gray font-bold uppercase tracking-wider mt-1">Bahan Alami</p>
-                            </div>
-                        </div>
-
-                        <!-- Abstract Shapes -->
-                        <div class="absolute top-[20%] right-[-10%] w-24 h-24 bg-brand-red/5 rounded-full blur-xl -z-10 animate-pulse"></div>
+                <div class="hidden md:flex absolute left-0 bottom-10 lg:bottom-20 bg-white/90 backdrop-blur-sm p-4 rounded-2xl shadow-xl items-center gap-4 animate-float-delayed z-20 border border-white">
+                    <div class="bg-brand-light p-3 rounded-full text-brand-dark">
+                        <i class="ph-fill ph-moped text-2xl"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-sm">Pengiriman Cepat</h4>
+                        <p class="text-xs text-brand-gray">Sampai dalam 30 Menit</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
-
 
     <!-- Menu Section -->
     <section id="menu" class="py-20 relative z-10">
@@ -301,16 +207,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                 <?php foreach($menu_items as $item): ?>
                 <div class="relative pt-20 group">
                     <div class="absolute top-0 left-1/2 -translate-x-1/2 w-40 h-40 z-10 transition-transform duration-300 group-hover:-translate-y-4">
-                        <img src="<?php echo $item['image']; ?>" alt="<?php echo $item['name']; ?>" class="w-full h-full object-cover rounded-[2.5rem] border-[6px] border-[#FEF8F0] shadow-xl text-center flex items-center justify-center text-xs">
+                        <img src="<?php echo $item['image']; ?>" alt="<?php echo $item['name']; ?>" class="w-full h-full object-cover rounded-full border-[6px] border-[#FEF8F0] shadow-xl text-center flex items-center justify-center text-xs">
                     </div>
                     <div class="card-<?php echo $item['category_color']; ?> rounded-[2.5rem] p-6 pt-24 pb-8 text-center text-white relative overflow-hidden shadow-lg shadow-<?php echo $item['category_color']; ?>-500/30">
                         <h3 class="font-bold text-xl mb-1"><?php echo $item['name']; ?></h3>
                         <p class="text-<?php echo $item['category_color']; ?>-100 text-sm mb-4"><?php echo $item['description']; ?></p>
                         <div class="flex justify-between items-center bg-white/20 rounded-full p-1 pl-4 backdrop-blur-sm">
                             <span class="font-bold text-lg">Rp <?php echo $item['price']; ?></span>
-                            <a href="https://wa.me/6285871444639?text=Halo,%20saya%20ingin%20pesan%20menu%20<?php echo urlencode($item['name']); ?>" target="_blank" class="bg-white text-brand-dark px-4 py-2 rounded-full text-xs font-bold hover:bg-brand-dark hover:text-white transition-colors flex items-center gap-1">
-                                Pesan <i class="ph-bold ph-whatsapp-logo"></i>
-                            </a>
+                            <button class="bg-white text-brand-dark px-4 py-2 rounded-full text-xs font-bold hover:bg-brand-dark hover:text-white transition-colors flex items-center gap-1">
+                                Pesan <i class="ph ph-caret-right"></i>
+                            </button>
                         </div>
                         <div class="absolute top-4 right-4 flex items-center gap-1 text-xs font-bold bg-white/20 px-2 py-1 rounded-full backdrop-blur-sm">
                             <i class="ph-fill ph-star text-yellow-300"></i> <?php echo number_format($item['rating'], 1); ?>
@@ -333,18 +239,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                             <h3 class="text-white font-serif font-bold text-2xl drop-shadow-md">TASTY BURGER</h3>
                             <span class="bg-brand-red text-white text-xs font-bold px-3 py-1 rounded-full mt-2 inline-block shadow-md">BARU!</span>
                         </div>
-                        <img src="assets/img/bento/bento_1.png" alt="Burger" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700">
+                        <img src="assets/img/bento_1.png" alt="Burger" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700">
                     </div>
                     
                     <div class="col-span-1 relative rounded-3xl overflow-hidden shadow-lg group h-48 sm:h-56">
-                        <img src="assets/img/bento/bento_2.png" alt="Pancake" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700">
+                        <img src="assets/img/bento_2.png" alt="Pancake" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700">
                     </div>
 
                     <div class="col-span-1 relative rounded-3xl overflow-hidden shadow-lg group h-48 sm:h-56">
                          <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10 flex items-end p-4">
-                            <a href="https://wa.me/6285871444639" target="_blank" class="bg-white/30 backdrop-blur-md text-white font-medium px-4 py-2 rounded-full w-full hover:bg-white hover:text-brand-dark transition-colors border border-white/50 text-sm uppercase text-center block">Pesan Sekarang</a>
+                            <button class="bg-white/30 backdrop-blur-md text-white font-medium px-4 py-2 rounded-full w-full hover:bg-white hover:text-brand-dark transition-colors border border-white/50 text-sm uppercase">Pesan Sekarang</button>
                          </div>
-                        <img src="assets/img/bento/bento_3.png" alt="Meatballs" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700">
+                        <img src="assets/img/bento_3.png" alt="Meatballs" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700">
                     </div>
                 </div>
 
@@ -385,14 +291,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                     </div>
                     <p class="text-brand-gray mb-8 leading-relaxed">"<?php echo $t['comment']; ?>"</p>
                     <div class="flex items-center gap-4 border-t border-gray-100 pt-6">
-                        <div class="w-12 h-12 rounded-xl bg-rose-100 text-rose-600 flex items-center justify-center font-bold text-xl shrink-0">
+                        <div class="w-12 h-12 rounded-full bg-rose-100 text-rose-600 flex items-center justify-center font-bold text-xl shrink-0">
                             <?php echo strtoupper(substr($t['name'], 0, 1)); ?>
                         </div>
                         <div>
                             <h4 class="font-bold text-brand-dark"><?php echo $t['name']; ?></h4>
-                            <p class="text-[10px] font-bold text-brand-red uppercase tracking-widest mt-1 opacity-70">
-                                <i class="ph-bold ph-clock"></i> <?php echo date('H:i, d M Y', strtotime($t['created_at'])); ?>
-                            </p>
+                            <p class="text-xs text-brand-gray"><?php echo $t['role']; ?></p>
                         </div>
                     </div>
                 </div>
@@ -409,11 +313,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
 
                     <div class="px-8 py-10">
                         <form id="review-form" class="space-y-6">
-                                <div class="review-field-group col-span-2">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                <div class="review-field-group">
                                     <label class="block text-sm font-medium text-brand-dark mb-2">Nama Lengkap</label>
-                                    <input id="review-name" type="text" placeholder="Masukkan nama Anda" required 
+                                    <input id="review-name" type="text" placeholder="Nama Anda" required 
                                         class="w-full px-5 py-3.5 rounded-xl border border-gray-200 focus:border-brand-red focus:ring-1 focus:ring-brand-red outline-none text-brand-dark transition-all placeholder-gray-400">
                                 </div>
+                                <div class="review-field-group">
+                                    <label class="block text-sm font-medium text-brand-dark mb-2">Profesi (opsional)</label>
+                                    <input id="review-role" type="text" placeholder="Pekerjaan / Status" 
+                                        class="w-full px-5 py-3.5 rounded-xl border border-gray-200 focus:border-brand-red focus:ring-1 focus:ring-brand-red outline-none text-brand-dark transition-all placeholder-gray-400">
+                                </div>
+                            </div>
 
                             <div class="review-field-group text-center sm:text-left">
                                 <label class="block text-sm font-medium text-brand-dark mb-3">Rating Anda</label>
@@ -495,7 +406,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                             <div class="w-12 h-12 rounded-full bg-orange-50 flex items-center justify-center shrink-0 text-brand-orange"><i class="ph-fill ph-phone text-2xl"></i></div>
                             <div>
                                 <h4 class="font-bold text-brand-dark mb-1">Telepon & WA</h4>
-                                <p class="text-brand-gray text-sm">+6285871444639</p>
+                                <p class="text-brand-gray text-sm">+<?php echo $settings['wa_number']; ?></p>
                                 <p class="text-brand-gray text-sm"><?php echo $settings['phone']; ?></p>
                             </div>
                         </div>
@@ -513,23 +424,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
             </div>
         </div>
     </section>
-    
-    <!-- Map Section -->
-    <section class="pb-20 relative z-10">
-        <div class="container mx-auto px-6">
-            <div class="w-full h-[450px] rounded-[3rem] overflow-hidden shadow-lg border-8 border-white">
-                <iframe 
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3257.497728749219!2d108.3596774740006!3d-7.186140892818977!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e6f43087e24f9d3%3A0x34cfd3589f2615d0!2sSMK%20Negeri%201%20Kawali!5e1!3m2!1sid!2sid!4v1775051857378!5m2!1sid!2sid" 
-                    width="100%" 
-                    height="100%" 
-                    style="border:0;" 
-                    allowfullscreen="" 
-                    loading="lazy" 
-                    referrerpolicy="no-referrer-when-downgrade">
-                </iframe>
-            </div>
-        </div>
-    </section>
 
     <!-- Footer -->
     <footer class="bg-brand-dark text-white pt-20 pb-10">
@@ -538,7 +432,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                 
                 <div class="lg:col-span-1">
                     <a href="#" class="flex items-center gap-2 mb-6">
-                        <img src="assets/img/MyCode.png" alt="Logo" class="w-10 h-10 object-contain">
+                        <div class="bg-white text-brand-red p-1.5 rounded-full">
+                            <i class="ph-fill ph-hamburger text-xl"></i>
+                        </div>
                         <span class="font-bold text-2xl tracking-tight"><?php echo $settings['logo_text']; ?></span>
                     </a>
                     <p class="text-gray-400 text-sm mb-6 leading-relaxed">
